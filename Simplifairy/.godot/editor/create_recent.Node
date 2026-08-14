@@ -1,9 +1,9 @@
-VisibleOnScreenEnabler2D
-CollisionShape2D
-Sprite2D
 Area2D
+CollisionShape2D
+AnimatedSprite2D
+CharacterBody2D
+VisibleOnScreenEnabler2D
+Sprite2D
 Timer
 Marker2D
 Node2D
-AnimatedSprite2D
-CharacterBody2D

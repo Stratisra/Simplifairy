@@ -1,7 +1,20 @@
 [gd_scene format=3 uid="uid://b1uay2d7r626"]
 
 [ext_resource type="PackedScene" uid="uid://bof4u2ngcwudx" path="res://Scenes/player.tscn" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://ciibr2x570tfe" path="res://Scenes/basic_enemy.tscn" id="2_bo1nx"]
 
 [node name="Main" type="Node2D" unique_id=429833917]
 
 [node name="Player" parent="." unique_id=889344565 instance=ExtResource("1_jjgbg")]
+
+[node name="BasicEnemy" parent="." unique_id=858219944 instance=ExtResource("2_bo1nx")]
+position = Vector2(936, 383)
+
+[node name="BasicEnemy2" parent="." unique_id=1234413532 instance=ExtResource("2_bo1nx")]
+position = Vector2(372, 316)
+
+[node name="BasicEnemy3" parent="." unique_id=2111109829 instance=ExtResource("2_bo1nx")]
+position = Vector2(788, 152)
+
+[node name="BasicEnemy4" parent="." unique_id=2051940741 instance=ExtResource("2_bo1nx")]
+position = Vector2(528, 537)

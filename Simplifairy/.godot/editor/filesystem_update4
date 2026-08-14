@@ -1,4 +1,10 @@
-res://Scenes/magic_bullet.tscn
-res://Scenes/magic_bullet.gd
-res://Scenes/player.tscn
+res://main.tscn
+res://Scenes/main.tscn
 res://Scenes/player.gd
+res://magic_bullet.gd
+res://Scenes/magic_bullet.tscn
+res://Scenes/player.tscn
+res://Scripts/player.gd
+res://basic_enemy.gd
+res://Scenes/basic_enemy.tscn
+res://Scenes/magic_bullet.gd

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bjfe4dwvdas5t" path="res://Scenes/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://v4wpfh2u3jre" path="res://Sprites/FairySprite1Alpha.png" id="2_6t5aa"]
 [ext_resource type="PackedScene" uid="uid://3xnkeki0u2jg" path="res://Scenes/magic_bullet.tscn" id="2_vgqql"]
+[ext_resource type="Texture2D" uid="uid://bfklu1cdk0f7n" path="res://Sprites/Wand.png" id="4_vgqql"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rq33d"]
 animations = [{
@@ -26,6 +27,7 @@ height = 76.0
 
 [node name="Player" type="CharacterBody2D" unique_id=889344565 node_paths=PackedStringArray("sprite", "wand_pivot", "muzzle", "wand_sprite") groups=["player"]]
 script = ExtResource("1_cvnsp")
+speed = 350.0
 friction = 1.0
 acceleration = 0.5
 sprite = NodePath("AnimatedSprite2D")
@@ -50,11 +52,12 @@ shape = SubResource("CapsuleShape2D_oox86")
 position = Vector2(0, 16)
 
 [node name="Wand" type="Sprite2D" parent="WandPivot" unique_id=1561918404]
-position = Vector2(34, 0)
-texture = ExtResource("2_6t5aa")
+position = Vector2(85, -1)
+scale = Vector2(4, 4)
+texture = ExtResource("4_vgqql")
 
 [node name="Muzzle" type="Marker2D" parent="WandPivot" unique_id=213896691]
-position = Vector2(34, 0)
+position = Vector2(121, -1)
 
 [node name="ShootTimer" type="Timer" parent="WandPivot" unique_id=1057371911]
 wait_time = 0.4
