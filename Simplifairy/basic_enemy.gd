@@ -18,6 +18,9 @@ var current_direction: Vector2 = Vector2.ZERO
 var knockback_velocity: Vector2 = Vector2.ZERO
 var hit_tween: Tween
 
+# Change the path from res://confetti_pop.tscn to res://whimsical_burst.tscn
+@export var death_fx: PackedScene = preload("res://Scenes/whimsical_burst.tscn")
+
 func _ready():
 	current_health = max_health
 	player = get_tree().get_first_node_in_group("player")
@@ -91,6 +94,22 @@ func flash_white():
 		sprite.modulate = Color(8.0, 8.0, 8.0, 1.0)
 		hit_tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 
+
 func die():
-	# Clean placeholder ready for death animations / particle effects / XP gems later
+	set_physics_process(false)
+	$CollisionShape2D.set_deferred("disabled", true)
+	
+	if death_fx:
+		var fx = death_fx.instantiate()
+		fx.global_position = global_position
+		# The root scene handles adding itself and cleanup
+		get_tree().current_scene.add_child(fx)
+	
+	# Optional: Keep the squish tween for extra 'juice'
+	if sprite:
+		# ... your previous squish/inflate tween code here ...
+		# death_tween.tween_property(sprite, "scale", Vector2.ZERO, 0.05)
+		# await death_tween.finished
+		pass # Remove or comment out pass if you keep the tween
+	
 	queue_free()

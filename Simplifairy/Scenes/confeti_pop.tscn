@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cm21o0ec8kyrm"]
+
+[ext_resource type="Script" uid="uid://bhaag53bud1ji" path="res://Scenes/confeti_pop.gd" id="1_kh4yi"]
+
+[sub_resource type="Curve" id="Curve_v8jyw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.60169494, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_rq33d"]
+offsets = PackedFloat32Array(0.13546798, 0.30788177, 0.5147783, 0.70197046, 0.88423645, 1)
+colors = PackedColorArray(0.16473964, 0.39774323, 1, 1, 1, 0.21268043, 0.15969583, 1, 0, 1, 0, 1, 0, 0.9607843, 0.92941177, 1, 0.88235295, 0.96862745, 0, 1, 1, 0, 1, 1)
+
+[node name="ConfetiPop" type="CPUParticles2D" unique_id=691392462]
+emitting = false
+amount = 25
+lifetime = 1.2
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+scale_amount_min = 3.0
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("Curve_v8jyw")
+color_initial_ramp = SubResource("Gradient_rq33d")
+script = ExtResource("1_kh4yi")

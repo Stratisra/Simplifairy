@@ -8,3 +8,9 @@ res://Scripts/player.gd
 res://basic_enemy.gd
 res://Scenes/basic_enemy.tscn
 res://Scenes/magic_bullet.gd
+res://Scenes/confeti_pop.tscn
+res://Scenes/confeti_pop.gd
+res://Scenes/star_pop.tscn
+res://Scenes/whimsical_burst.tscn
+res://Scenes/whimsical_burst.gd
+res://Scenes/enemy_spawner.gd

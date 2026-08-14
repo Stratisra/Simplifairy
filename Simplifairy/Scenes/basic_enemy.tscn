@@ -36,7 +36,7 @@ sprite = NodePath("AnimatedSprite2D")
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_mbxfi")
 autoplay = "default"
-frame_progress = 0.9717884
+frame_progress = 0.8170145
 speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1930727508]

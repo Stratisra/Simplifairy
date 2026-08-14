@@ -7,6 +7,8 @@
 
 [node name="MagicBullet" type="Area2D" unique_id=367243790]
 script = ExtResource("1_aiwfu")
+speed = 800.0
+damage = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1507681539]
 position = Vector2(2.3841858e-07, -2.0000005)
