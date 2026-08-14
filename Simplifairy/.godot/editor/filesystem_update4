@@ -1,6 +1,4 @@
-res://main.tscn
-res://Scenes/main.tscn
-res://Scenes/player.gd
-res://magic_bullet.gd
 res://Scenes/magic_bullet.tscn
+res://Scenes/magic_bullet.gd
 res://Scenes/player.tscn
+res://Scenes/player.gd

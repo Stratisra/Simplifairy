@@ -1,7 +1,10 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1786717188
-::res://Scenes/::1786717188
-main.tscn::PackedScene::125078307548812505::1786716665::0::1::::<><><>0<>0<><>::
-::res://Scripts/::1786717183
-::res://Sprites/::1786717200
-FairySprite1Alpha.png::CompressedTexture2D::1535195506700825514::1786717200::1786717200::1::::<><><>0<>0<>f135ddcd17e503d40a12a68f2b81ba3e<>res://.godot/imported/FairySprite1Alpha.png-a3b1535c0f605ccec5fc93e52ea5c7dd.ctex::
+::res://::1786720944
+::res://Scenes/::1786720808
+magic_bullet.tscn::PackedScene::2013575714992448724::1786720980::0::1::::<><><>0<>0<><>::uid://5k7i0pafwd3l::::res://magic_bullet.gd<>uid://v4wpfh2u3jre::::res://Sprites/FairySprite1Alpha.png
+main.tscn::PackedScene::125078307548812505::1786720796::0::1::::<><><>0<>0<><>::uid://bof4u2ngcwudx::::res://Scenes/player.tscn
+player.gd::GDScript::3028737013713921575::1786720796::0::1::::<>CharacterBody2D<><>0<>0<><>::
+player.tscn::PackedScene::3381184330553263133::1786720796::0::1::::<><><>0<>0<><>::uid://bjfe4dwvdas5t::::res://Scenes/player.gd<>uid://v4wpfh2u3jre::::res://Sprites/FairySprite1Alpha.png<>uid://3xnkeki0u2jg::::res://Scenes/magic_bullet.tscn
+magic_bullet.gd::GDScript::2128267653064705935::1786720796::0::1::::<>Area2D<><>0<>0<><>::
+::res://Sprites/::1786720808
+FairySprite1Alpha.png::CompressedTexture2D::1535195506700825514::1786720796::1786720796::1::::<><><>0<>0<>f135ddcd17e503d40a12a68f2b81ba3e<>res://.godot/imported/FairySprite1Alpha.png-a3b1535c0f605ccec5fc93e52ea5c7dd.ctex::

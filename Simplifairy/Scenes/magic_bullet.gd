@@ -7,10 +7,6 @@ func _physics_process(delta: float) -> void:
 	# Move forward in the direction the projectile is rotated
 	position += transform.x * speed * delta
 
-func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	# Delete the bullet when it leaves the screen
-	queue_free()
-
 func _on_body_entered(body: Node2D) -> void:
 	# Ignore the player
 	if body.is_in_group("player"):
@@ -22,3 +18,6 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	# Destroy bullet on hit
 	queue_free()
+
+func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
+	queue_free() # Replace with function body.

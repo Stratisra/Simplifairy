@@ -65,8 +65,7 @@ func _physics_process(delta):
 			wand_sprite.flip_v = mouse_pos.x < global_position.x
 
 	# 3. Manual Click Shooting (if auto_shoot is turned off)
-	if not auto_shoot and Input.is_action_just_pressed("shoot"): 
-		print('shooooot')
+	if not auto_shoot and Input.is_action_just_pressed("shoot"):
 		shoot()
 
 	# 4. Procedural Movement Animation (Wobble & Bounce)
