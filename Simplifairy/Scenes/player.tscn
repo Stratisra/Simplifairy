@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://bof4u2ngcwudx"]
+
+[ext_resource type="Script" uid="uid://bjfe4dwvdas5t" path="res://Scenes/player.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://v4wpfh2u3jre" path="res://Sprites/FairySprite1Alpha.png" id="2_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://3xnkeki0u2jg" path="res://Scenes/magic_bullet.tscn" id="2_vgqql"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rq33d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_6t5aa")
+}],
+"loop": 1,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"Running",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oox86"]
+radius = 17.0
+height = 76.0
+
+[node name="Player" type="CharacterBody2D" unique_id=889344565 node_paths=PackedStringArray("sprite", "wand_pivot", "muzzle", "wand_sprite") groups=["player"]]
+script = ExtResource("1_cvnsp")
+friction = 1.0
+acceleration = 0.5
+sprite = NodePath("AnimatedSprite2D")
+projectile_scene = ExtResource("2_vgqql")
+wand_pivot = NodePath("WandPivot")
+muzzle = NodePath("WandPivot/Muzzle")
+wand_sprite = NodePath("WandPivot/Wand")
+auto_shoot = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1252146837]
+position = Vector2(0, 42)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_rq33d")
+animation = &"Idle"
+offset = Vector2(0, -10.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=145078004]
+position = Vector2(0, 16)
+shape = SubResource("CapsuleShape2D_oox86")
+
+[node name="WandPivot" type="Node2D" parent="." unique_id=2046021958]
+position = Vector2(0, 16)
+
+[node name="Wand" type="Sprite2D" parent="WandPivot" unique_id=1561918404]
+position = Vector2(34, 0)
+texture = ExtResource("2_6t5aa")
+
+[node name="Muzzle" type="Marker2D" parent="WandPivot" unique_id=213896691]
+position = Vector2(34, 0)
+
+[node name="ShootTimer" type="Timer" parent="WandPivot" unique_id=1057371911]
+wait_time = 0.4
+one_shot = true
+
+[connection signal="timeout" from="WandPivot/ShootTimer" to="." method="_on_shoot_timer_timeout"]

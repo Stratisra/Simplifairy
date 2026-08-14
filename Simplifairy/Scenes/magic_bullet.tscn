@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://3xnkeki0u2jg"]
+
+[ext_resource type="Script" uid="uid://5k7i0pafwd3l" path="res://magic_bullet.gd" id="1_aiwfu"]
+[ext_resource type="Texture2D" uid="uid://v4wpfh2u3jre" path="res://Sprites/FairySprite1Alpha.png" id="2_b8trc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
+
+[node name="MagicBullet" type="Area2D" unique_id=367243790]
+script = ExtResource("1_aiwfu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1507681539]
+position = Vector2(2.3841858e-07, -2.0000005)
+scale = Vector2(3.03125, 1.171875)
+texture = ExtResource("2_b8trc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=790664700]
+shape = SubResource("CircleShape2D_rq33d")
+debug_color = Color(0, 0.58431375, 0.69803923, 0.41960785)
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=125199149]

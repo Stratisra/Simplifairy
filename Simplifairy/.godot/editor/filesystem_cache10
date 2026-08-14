@@ -1,2 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1786716650
+::res://::1786717188
+::res://Scenes/::1786717188
+main.tscn::PackedScene::125078307548812505::1786716665::0::1::::<><><>0<>0<><>::
+::res://Scripts/::1786717183
+::res://Sprites/::1786717200
+FairySprite1Alpha.png::CompressedTexture2D::1535195506700825514::1786717200::1786717200::1::::<><><>0<>0<>f135ddcd17e503d40a12a68f2b81ba3e<>res://.godot/imported/FairySprite1Alpha.png-a3b1535c0f605ccec5fc93e52ea5c7dd.ctex::
