@@ -1,12 +1,13 @@
+Timer
+Sprite2D
 CollisionShape2D
+OpenXRCompositionLayerCylinder
 Area2D
 AnimatedSprite2D
 TileMapLayer
 Camera2D
-Timer
 Node2D
 CPUParticles2D
 CharacterBody2D
 VisibleOnScreenEnabler2D
-Sprite2D
 Marker2D

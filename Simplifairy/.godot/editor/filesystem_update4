@@ -1,10 +1,9 @@
-res://Scenes/player.tscn
-res://Scenes/main.tscn
-res://Scenes/enemy_spawner.gd
-res://Scenes/magic_bullet.tscn
-res://magic_bullet.gd
-res://Scenes/player.gd
-res://Scenes/magic_bullet.gd
 res://Scenes/basic_enemy.tscn
-res://Scenes/fire_enemy.tscn
+res://Scenes/enemy_spawner.gd
+res://enemy_bullet.gd
+res://Scenes/ranged_enemy.tscn
+res://Scenes/ranged_enemy.gd
+res://Scenes/main.tscn
+res://Scenes/enemy_bullet.tscn
 res://basic_enemy.gd
+res://Scenes/fast_enemy.tscn

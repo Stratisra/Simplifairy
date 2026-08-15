@@ -1,14 +1,15 @@
-[gd_scene format=3 uid="uid://ciibr2x570tfe"]
+[gd_scene format=3 uid="uid://bd14mrjbwnwsf"]
 
-[ext_resource type="Script" uid="uid://dkiwyx0fqp82o" path="res://basic_enemy.gd" id="1_mbxfi"]
-[ext_resource type="Texture2D" uid="uid://b5nubewoq8kyr" path="res://Sprites/MinionsSprite1Alpha-Sheet.png" id="2_fecjr"]
+[ext_resource type="Script" uid="uid://dl64a33wvvx7b" path="res://Scenes/ranged_enemy.gd" id="1_5x7gc"]
+[ext_resource type="PackedScene" uid="uid://cipu1bb81gj0o" path="res://Scenes/enemy_bullet.tscn" id="2_1qm41"]
+[ext_resource type="Texture2D" uid="uid://b5nubewoq8kyr" path="res://Sprites/MinionsSprite1Alpha-Sheet.png" id="2_nqq2h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lal1l"]
-atlas = ExtResource("2_fecjr")
+atlas = ExtResource("2_nqq2h")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r4aor"]
-atlas = ExtResource("2_fecjr")
+atlas = ExtResource("2_nqq2h")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mbxfi"]
@@ -31,12 +32,15 @@ radius = 37.12142
 [sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
 radius = 23.021729
 
-[node name="BasicEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
+[node name="RangedEnemy" type="CharacterBody2D" unique_id=858219944]
+modulate = Color(1, 0.22352941, 1, 1)
 z_index = 1
 collision_layer = 2
 safe_margin = 14.386
-script = ExtResource("1_mbxfi")
-sprite = NodePath("AnimatedSprite2D")
+script = ExtResource("1_5x7gc")
+enemy_projectile = ExtResource("2_1qm41")
+shoot_range = 500.0
+fire_rate = 1.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]
 scale = Vector2(4, 4)
