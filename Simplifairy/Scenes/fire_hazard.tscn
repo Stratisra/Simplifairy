@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cne7cd3nkycw0"]
+
+[ext_resource type="Script" uid="uid://d4n00rafnpb32" path="res://fire_hazard.gd" id="1_3frdq"]
+[ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="2_b0pwb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oox86"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_b0pwb")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
+radius = 23.0
+
+[node name="FireHazard" type="Area2D" unique_id=263783147]
+script = ExtResource("1_3frdq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=609903112]
+self_modulate = Color(1, 0.33333334, 0.27058825, 1)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_oox86")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1114774408]
+shape = SubResource("CircleShape2D_rq33d")

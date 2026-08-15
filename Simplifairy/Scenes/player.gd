@@ -5,6 +5,11 @@ extends CharacterBody2D
 @export var friction: float = 0.1
 @export var acceleration: float = 0.1
 
+@export_group("Dash")
+@export var dash_speed: float = 650.0       # Speed during the dash burst
+@export var dash_duration: float = 0.15     # How long the dash lasts (in seconds)
+@export var dash_cooldown: float = 0.6     # Time before you can dash again
+
 @export_group("Procedural Animation")
 @export var sprite: AnimatedSprite2D 
 @export var tilt_amount: float = 0.15
@@ -13,18 +18,30 @@ extends CharacterBody2D
 @export var bounce_speed: float = 15.0
 
 @export_group("Combat / Wand")
-@export var projectile_scene: PackedScene # Drag magic_bullet.tscn here!
+@export var projectile_scene: PackedScene 
 @export var wand_pivot: Node2D
 @export var muzzle: Marker2D
 @export var wand_sprite: Sprite2D
-@export var auto_shoot: bool = true # Toggle between Vampire Survivors auto-fire or click-to-shoot
+@export var auto_shoot: bool = true 
 
 var time_moving: float = 0.0
 var base_sprite_y: float = 0.0
 
+# Wand & recoil memory
+var base_wand_pos: Vector2
+var shoot_tween: Tween 
+
+# Dash state variables
+var is_dashing: bool = false
+var dash_timer: float = 0.0
+var dash_cooldown_timer: float = 0.0
+var dash_direction: Vector2 = Vector2.ZERO
+
 func _ready():
 	if sprite:
 		base_sprite_y = sprite.position.y
+	if wand_sprite:
+		base_wand_pos = wand_sprite.position
 
 func get_input():
 	var input = Vector2.ZERO
@@ -41,35 +58,54 @@ func get_input():
 func _physics_process(delta):
 	var direction = get_input()
 	
-	# 1. Physics & Movement
-	if direction.length() > 0:
-		velocity = velocity.lerp(direction.normalized() * speed, acceleration)
+	# 1. Dash Timers & Activation Check
+	if dash_cooldown_timer > 0.0:
+		dash_cooldown_timer -= delta
+
+	# Checks for custom "dash" action OR default Spacebar ("ui_select")
+	var dash_pressed = Input.is_action_just_pressed("dash") or Input.is_action_just_pressed("ui_select")
+	if dash_pressed and not is_dashing and dash_cooldown_timer <= 0.0:
+		start_dash(direction)
+
+	# 2. Physics & Movement
+	if is_dashing:
+		dash_timer -= delta
+		velocity = dash_direction * dash_speed
+		
+		if dash_timer <= 0.0:
+			is_dashing = false
 	else:
-		velocity = velocity.lerp(Vector2.ZERO, friction)
+		if direction.length() > 0:
+			velocity = velocity.lerp(direction.normalized() * speed, acceleration)
+		else:
+			velocity = velocity.lerp(Vector2.ZERO, friction)
 		
 	move_and_slide()
 	
-	# 2. Aiming & Mouse Flipping
+	# 3. Aiming, Mouse Flipping, and Depth Sorting
 	var mouse_pos = get_global_mouse_position()
 	
 	if sprite:
-		# Flip character body towards mouse position
 		sprite.flip_h = mouse_pos.x < global_position.x
 	
 	if wand_pivot:
-		# Point wand at mouse
 		wand_pivot.look_at(mouse_pos)
 		
-		# Prevent the wand from rendering upside down when aiming left
 		if wand_sprite:
 			wand_sprite.flip_v = mouse_pos.x < global_position.x
+			
+			# Dynamic Depth Sorting (wand behind player when aiming up, in front when aiming down)
+			if mouse_pos.y < global_position.y:
+				wand_pivot.z_index = -1
+			else:
+				wand_pivot.z_index = 1
 
-	# 3. Manual Click Shooting (if auto_shoot is turned off)
-	if not auto_shoot and Input.is_action_just_pressed("shoot"):
+	# 4. Manual Click Shooting
+	if not auto_shoot and Input.is_action_just_pressed("shoot"): 
 		shoot()
 
-	# 4. Procedural Movement Animation (Wobble & Bounce)
-	if sprite:
+	# 5. Procedural Movement Animation (Wobble & Bounce)
+	if sprite and not is_dashing:
 		if velocity.length() > 10.0:
 			time_moving += delta
 			sprite.rotation = sin(time_moving * tilt_speed) * tilt_amount
@@ -79,16 +115,46 @@ func _physics_process(delta):
 			sprite.rotation = lerp_angle(sprite.rotation, 0.0, 0.2)
 			sprite.position.y = lerp(sprite.position.y, base_sprite_y, 0.2)
 
+func start_dash(input_direction: Vector2):
+	is_dashing = true
+	dash_timer = dash_duration
+	dash_cooldown_timer = dash_cooldown
+	
+	# If moving, dash in the 8-directional input vector; otherwise dash toward mouse
+	if input_direction != Vector2.ZERO:
+		dash_direction = input_direction.normalized()
+	else:
+		dash_direction = global_position.direction_to(get_global_mouse_position())
+		
+	# Snappy visual stretch on dash
+	if sprite:
+		var dash_tween = create_tween()
+		sprite.scale = Vector2(1.35*sprite.scale.x, 0.75*sprite.scale.x)
+		dash_tween.tween_property(sprite, "scale", Vector2.ONE*4, dash_duration)\
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
 func shoot():
 	if projectile_scene and muzzle:
 		var bullet = projectile_scene.instantiate()
 		bullet.global_position = muzzle.global_position
 		bullet.rotation = wand_pivot.rotation
-		
-		# Add bullet to root scene tree so it moves independently of player
 		get_tree().current_scene.add_child(bullet)
+		
+		# Visual Feedback (Recoil & Glow)
+		if wand_sprite:
+			if shoot_tween and shoot_tween.is_valid():
+				shoot_tween.kill()
+				
+			shoot_tween = create_tween()
+			shoot_tween.set_parallel(true)
+			
+			wand_sprite.modulate = Color(3.0, 3.0, 1.5, 1.0)
+			shoot_tween.tween_property(wand_sprite, "modulate", Color.WHITE, 0.15)
+			
+			wand_sprite.position.x = base_wand_pos.x - 8.0
+			shoot_tween.tween_property(wand_sprite, "position:x", base_wand_pos.x, 0.15)\
+				.set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
 
-# Connect ShootTimer timeout signal here for Vampire Survivors auto-firing
 func _on_shoot_timer_timeout():
 	if auto_shoot:
 		shoot()

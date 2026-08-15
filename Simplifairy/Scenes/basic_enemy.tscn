@@ -29,6 +29,7 @@ animations = [{
 radius = 23.021729
 
 [node name="BasicEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
+z_index = 1
 script = ExtResource("1_mbxfi")
 sprite = NodePath("AnimatedSprite2D")
 

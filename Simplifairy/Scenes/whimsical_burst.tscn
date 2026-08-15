@@ -5,29 +5,24 @@
 [ext_resource type="PackedScene" uid="uid://cm21o0ec8kyrm" path="res://Scenes/confeti_pop.tscn" id="3_p3r68"]
 
 [sub_resource type="Curve" id="Curve_xut6b"]
-_limits = [0.0, 100.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 71.68143), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0.49390244), 0.0, 0.0, 0, 0, Vector2(0.49538457, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [node name="WhimsicalBurst" type="Node2D" unique_id=1298975927]
+visible = false
 script = ExtResource("1_xut6b")
-
-[node name="StarPop" parent="." unique_id=691392462 instance=ExtResource("2_1aegb")]
-scale = Vector2(1, 1)
-amount = 20
-gravity = Vector2(0, 0)
-initial_velocity_min = 600.0
-initial_velocity_max = 700.0
-damping_min = 300.0
-damping_max = 300.0
-damping_curve = SubResource("Curve_xut6b")
-scale_amount_min = 1.0
-scale_amount_max = 2.0
-scale_amount_curve = null
-script = null
 
 [node name="ConfetiPop" parent="." unique_id=1412420803 instance=ExtResource("3_p3r68")]
 gravity = Vector2(0, 0)
 initial_velocity_min = 44.59
 initial_velocity_max = 153.97
 script = null
+
+[node name="StarPop" parent="." unique_id=691392462 instance=ExtResource("2_1aegb")]
+initial_velocity_max = 256.73
+damping_min = 300.0
+damping_max = 300.0
+damping_curve = SubResource("Curve_xut6b")
+scale_amount_min = 0.5
+scale_amount_max = 1.5
+scale_amount_curve = SubResource("Curve_xut6b")

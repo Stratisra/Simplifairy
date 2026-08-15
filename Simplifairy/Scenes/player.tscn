@@ -23,13 +23,15 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oox86"]
 radius = 17.0
-height = 76.0
+height = 54.0
 
 [node name="Player" type="CharacterBody2D" unique_id=889344565 node_paths=PackedStringArray("sprite", "wand_pivot", "muzzle", "wand_sprite") groups=["player"]]
+z_index = 2
 script = ExtResource("1_cvnsp")
 speed = 350.0
 friction = 1.0
 acceleration = 0.5
+dash_speed = 1000.0
 sprite = NodePath("AnimatedSprite2D")
 projectile_scene = ExtResource("2_vgqql")
 wand_pivot = NodePath("WandPivot")
@@ -45,24 +47,25 @@ animation = &"Idle"
 offset = Vector2(0, -10.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=145078004]
-position = Vector2(0, 16)
+position = Vector2(0, 32)
 shape = SubResource("CapsuleShape2D_oox86")
 
 [node name="WandPivot" type="Node2D" parent="." unique_id=2046021958]
 position = Vector2(0, 16)
 
 [node name="Wand" type="Sprite2D" parent="WandPivot" unique_id=1561918404]
-position = Vector2(85, -1)
+position = Vector2(23, -1)
 scale = Vector2(4, 4)
 texture = ExtResource("4_vgqql")
 
 [node name="Muzzle" type="Marker2D" parent="WandPivot" unique_id=213896691]
-position = Vector2(121, -1)
+position = Vector2(52, -1)
 
 [node name="ShootTimer" type="Timer" parent="WandPivot" unique_id=1057371911]
-wait_time = 0.4
+wait_time = 0.8
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=921869448]
+zoom = Vector2(0.675, 0.675)
 
 [connection signal="timeout" from="WandPivot/ShootTimer" to="." method="_on_shoot_timer_timeout"]

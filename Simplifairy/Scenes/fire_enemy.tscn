@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://x3soe0wh7uwf"]
+
+[ext_resource type="Script" uid="uid://6h4as7ov4tuw" path="res://Scenes/fire_enemy.gd" id="1_xpf0k"]
+[ext_resource type="PackedScene" uid="uid://cne7cd3nkycw0" path="res://Scenes/fire_hazard.tscn" id="2_ft458"]
+[ext_resource type="Texture2D" uid="uid://vy6u7c73hklh" path="res://Sprites/FireEnemySprite1.png" id="2_xpf0k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ft458"]
+atlas = ExtResource("2_xpf0k")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bdws"]
+atlas = ExtResource("2_xpf0k")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mbxfi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ft458")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bdws")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fecjr"]
+radius = 23.021729
+
+[node name="FireEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
+z_index = 1
+script = ExtResource("1_xpf0k")
+fire_hazard_scene = ExtResource("2_ft458")
+speed = 120.0
+sprite = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_mbxfi")
+autoplay = "default"
+frame_progress = 0.8170145
+speed_scale = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1930727508]
+shape = SubResource("CircleShape2D_fecjr")
