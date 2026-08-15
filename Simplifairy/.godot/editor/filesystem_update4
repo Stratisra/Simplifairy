@@ -1,0 +1,10 @@
+res://Scenes/player.tscn
+res://Scenes/main.tscn
+res://Scenes/enemy_spawner.gd
+res://Scenes/magic_bullet.tscn
+res://magic_bullet.gd
+res://Scenes/player.gd
+res://Scenes/magic_bullet.gd
+res://Scenes/basic_enemy.tscn
+res://Scenes/fire_enemy.tscn
+res://basic_enemy.gd

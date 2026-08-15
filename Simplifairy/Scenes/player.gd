@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+@export_group("AOE & Tracking")
+@export var wand_has_aoe: bool = true
+@export var wand_aoe_radius: float = 60.0
+@export var wand_has_tracking: bool = true
+
 @export_group("Movement")
 @export var speed: float = 200.0
 @export var friction: float = 0.1
@@ -8,7 +13,7 @@ extends CharacterBody2D
 @export_group("Dash")
 @export var dash_speed: float = 650.0       # Speed during the dash burst
 @export var dash_duration: float = 0.15     # How long the dash lasts (in seconds)
-@export var dash_cooldown: float = 0.6     # Time before you can dash again
+@export var dash_cooldown: float = 0.6      # Time before you can dash again
 
 @export_group("Procedural Animation")
 @export var sprite: AnimatedSprite2D 
@@ -22,7 +27,14 @@ extends CharacterBody2D
 @export var wand_pivot: Node2D
 @export var muzzle: Marker2D
 @export var wand_sprite: Sprite2D
-@export var auto_shoot: bool = true 
+
+# --- NEW SHOOTING MODES ---
+@export var auto_shoot: bool = true             # True = Vampire Survivors style (uses Timer node)
+@export var wand_hold_to_shoot: bool = true     # True = Hold button to shoot, False = Click for every shot
+@export var fire_rate: float = 0.25             # Delay between shots when holding the button
+
+var fire_cooldown: float = 0.0
+# --------------------------
 
 var time_moving: float = 0.0
 var base_sprite_y: float = 0.0
@@ -62,7 +74,6 @@ func _physics_process(delta):
 	if dash_cooldown_timer > 0.0:
 		dash_cooldown_timer -= delta
 
-	# Checks for custom "dash" action OR default Spacebar ("ui_select")
 	var dash_pressed = Input.is_action_just_pressed("dash") or Input.is_action_just_pressed("ui_select")
 	if dash_pressed and not is_dashing and dash_cooldown_timer <= 0.0:
 		start_dash(direction)
@@ -93,16 +104,27 @@ func _physics_process(delta):
 		
 		if wand_sprite:
 			wand_sprite.flip_v = mouse_pos.x < global_position.x
-			
-			# Dynamic Depth Sorting (wand behind player when aiming up, in front when aiming down)
 			if mouse_pos.y < global_position.y:
 				wand_pivot.z_index = -1
 			else:
 				wand_pivot.z_index = 1
 
-	# 4. Manual Click Shooting
-	if not auto_shoot and Input.is_action_just_pressed("shoot"): 
-		shoot()
+	# --- 4. MANUAL SHOOTING LOGIC ---
+	if fire_cooldown > 0.0:
+		fire_cooldown -= delta
+		
+	if not auto_shoot:
+		if wand_hold_to_shoot:
+			# HOLD MODE: Uses is_action_pressed (triggers repeatedly while held down)
+			if Input.is_action_pressed("shoot") and fire_cooldown <= 0.0:
+				shoot()
+				fire_cooldown = fire_rate
+		else:
+			# CLICK MODE: Uses is_action_just_pressed (forces you to click every single time)
+			if Input.is_action_just_pressed("shoot") and fire_cooldown <= 0.0:
+				shoot()
+				fire_cooldown = fire_rate
+	# --------------------------------
 
 	# 5. Procedural Movement Animation (Wobble & Bounce)
 	if sprite and not is_dashing:
@@ -120,17 +142,15 @@ func start_dash(input_direction: Vector2):
 	dash_timer = dash_duration
 	dash_cooldown_timer = dash_cooldown
 	
-	# If moving, dash in the 8-directional input vector; otherwise dash toward mouse
 	if input_direction != Vector2.ZERO:
 		dash_direction = input_direction.normalized()
 	else:
 		dash_direction = global_position.direction_to(get_global_mouse_position())
 		
-	# Snappy visual stretch on dash
 	if sprite:
 		var dash_tween = create_tween()
-		sprite.scale = Vector2(1.35*sprite.scale.x, 0.75*sprite.scale.x)
-		dash_tween.tween_property(sprite, "scale", Vector2.ONE*4, dash_duration)\
+		sprite.scale = Vector2(1.35 * sprite.scale.x, 0.75 * sprite.scale.y)
+		dash_tween.tween_property(sprite, "scale", Vector2.ONE * 4, dash_duration)\
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func shoot():
@@ -138,6 +158,12 @@ func shoot():
 		var bullet = projectile_scene.instantiate()
 		bullet.global_position = muzzle.global_position
 		bullet.rotation = wand_pivot.rotation
+		
+		# Pass variables to the bullet!
+		bullet.set("has_aoe", wand_has_aoe)
+		bullet.set("aoe_radius", wand_aoe_radius)
+		bullet.set("has_tracking", wand_has_tracking)
+		
 		get_tree().current_scene.add_child(bullet)
 		
 		# Visual Feedback (Recoil & Glow)
@@ -155,6 +181,7 @@ func shoot():
 			shoot_tween.tween_property(wand_sprite, "position:x", base_wand_pos.x, 0.15)\
 				.set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
 
+# This remains here to handle your Vampire Survivors auto-fire Timer!
 func _on_shoot_timer_timeout():
 	if auto_shoot:
 		shoot()

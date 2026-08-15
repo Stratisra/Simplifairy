@@ -1,6 +1,6 @@
 CollisionShape2D
-AnimatedSprite2D
 Area2D
+AnimatedSprite2D
 TileMapLayer
 Camera2D
 Timer

@@ -26,10 +26,14 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fecjr"]
+radius = 37.12142
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
 radius = 23.021729
 
 [node name="BasicEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
 z_index = 1
+collision_layer = 2
 script = ExtResource("1_mbxfi")
 sprite = NodePath("AnimatedSprite2D")
 
@@ -42,3 +46,10 @@ speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1930727508]
 shape = SubResource("CircleShape2D_fecjr")
+
+[node name="SoftCollision2D" type="Area2D" parent="." unique_id=312492503]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision2D" unique_id=2081539820]
+shape = SubResource("CircleShape2D_rq33d")

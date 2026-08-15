@@ -31,6 +31,7 @@ radius = 23.021729
 
 [node name="FireEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
 z_index = 1
+collision_layer = 2
 script = ExtResource("1_xpf0k")
 fire_hazard_scene = ExtResource("2_ft458")
 speed = 120.0

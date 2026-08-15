@@ -28,6 +28,7 @@ height = 54.0
 [node name="Player" type="CharacterBody2D" unique_id=889344565 node_paths=PackedStringArray("sprite", "wand_pivot", "muzzle", "wand_sprite") groups=["player"]]
 z_index = 2
 script = ExtResource("1_cvnsp")
+wand_aoe_radius = 200.0
 speed = 350.0
 friction = 1.0
 acceleration = 0.5

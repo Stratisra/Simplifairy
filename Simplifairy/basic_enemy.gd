@@ -38,13 +38,29 @@ func movement(delta: float):
 	# 1. Figure out which way the player is
 	current_direction = global_position.direction_to(player.global_position)
 	
+	# --- NEW: SOFT COLLISION / FLOCKING ---
+	var separation_vector = Vector2.ZERO
+	if has_node("SoftCollision"):
+		var soft_collider = $SoftCollision
+		for area in soft_collider.get_overlapping_areas():
+			# Make sure we don't push away from ourselves!
+			if area != soft_collider:
+				# Add a push force directly away from the overlapping enemy
+				separation_vector += area.global_position.direction_to(global_position)
+		
+		# Normalize it so they don't get launched at lightspeed if 10 enemies overlap
+		if separation_vector != Vector2.ZERO:
+			separation_vector = separation_vector.normalized()
+	# --------------------------------------
+	
 	# 2. Check if we are being knocked back
 	if knockback_velocity.length() > 15.0:
 		# We are stunned! Only apply the knockback movement
 		velocity = knockback_velocity
 	else:
-		# Normal movement: chase the player
-		velocity = current_direction * speed
+		# Combine chasing the player with pushing away from friends
+		# Multiplying the separation_vector by speed ensures the push is strong enough to matter
+		velocity = (current_direction * speed) + (separation_vector * (speed * 0.8))
 		
 		# Ensure knockback goes completely to zero so it doesn't get stuck
 		knockback_velocity = Vector2.ZERO 
