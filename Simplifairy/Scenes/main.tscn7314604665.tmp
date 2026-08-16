@@ -8,8 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bd14mrjbwnwsf" path="res://Scenes/ranged_enemy.tscn" id="5_21xkr"]
 [ext_resource type="PackedScene" uid="uid://x3soe0wh7uwf" path="res://Scenes/fire_enemy.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://cxjr82utgc8i0" path="res://Scenes/fast_enemy.tscn" id="6_6bp64"]
-[ext_resource type="Texture2D" uid="uid://babucxr0w7vok" path="res://Sprites/simplification card.png" id="9_ynf5e"]
-[ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="10_hptm8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kry3j"]
 texture = ExtResource("4_jjvhh")
@@ -121,6 +119,18 @@ player = NodePath("Player")
 
 [node name="Player" parent="." unique_id=889344565 instance=ExtResource("1_jjgbg")]
 position = Vector2(531, 317)
+max_health = null
+i_frame_duration = null
+wand_has_aoe = null
+wand_has_tracking = null
+dash_duration = null
+dash_cooldown = null
+tilt_amount = null
+tilt_speed = null
+bounce_amount = null
+bounce_speed = null
+wand_hold_to_shoot = null
+fire_rate = null
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=922322114 node_paths=PackedStringArray("player")]
 script = ExtResource("2_bo1nx")
@@ -128,7 +138,7 @@ enemy_scenes = Array[PackedScene]([ExtResource("3_8gbba"), ExtResource("5_kry3j"
 player = NodePath("../Player")
 base_spawn_count = 1
 difficulty_scale_rate = 0.1
-chance_elite = 0.1
+chance_elite = 0.0
 chance_fast = 0.0
 chance_shielded = 0.0
 chance_exploding = 0.0
@@ -180,67 +190,25 @@ shape = SubResource("WorldBoundaryShape2D_oox86")
 
 [node name="DowngradeUI" type="CanvasLayer" parent="." unique_id=1725946615]
 process_mode = 3
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="DowngradeUI" unique_id=1493710411]
-offset_left = -108.0
-offset_top = -45.0
-offset_right = 2146.0
-offset_bottom = 1131.0
+offset_left = 27.0
+offset_top = 16.0
+offset_right = 67.0
+offset_bottom = 56.0
 size_flags_horizontal = 4
 color = Color(0, 0, 0, 0.5137255)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DowngradeUI" unique_id=342863113]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -414.0
-offset_top = -206.0
-offset_right = -282.0
-offset_bottom = -142.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(6, 6)
-size_flags_horizontal = 4
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="SimplificationCard" type="TextureRect" parent="DowngradeUI/HBoxContainer" unique_id=513646357]
+[node name="Button1" type="Button" parent="DowngradeUI/HBoxContainer" unique_id=513792258]
 layout_mode = 2
-texture = ExtResource("9_ynf5e")
 
-[node name="Button1" type="TextureButton" parent="DowngradeUI/HBoxContainer/SimplificationCard" unique_id=1866352479]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.000002
-offset_top = -8.000002
-offset_right = 8.000002
-offset_bottom = 8.000002
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("10_hptm8")
-
-[node name="SimplificationCard2" type="TextureRect" parent="DowngradeUI/HBoxContainer" unique_id=2004460075]
+[node name="Button2" type="Button" parent="DowngradeUI/HBoxContainer" unique_id=1178780786]
 layout_mode = 2
-texture = ExtResource("9_ynf5e")
-
-[node name="Button2" type="TextureButton" parent="DowngradeUI/HBoxContainer/SimplificationCard2" unique_id=473346767]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.000002
-offset_top = -8.000002
-offset_right = 8.000002
-offset_bottom = 8.000002
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("10_hptm8")
 
 [node name="DowngradeTimer" type="Timer" parent="." unique_id=998177085]
 wait_time = 10.0

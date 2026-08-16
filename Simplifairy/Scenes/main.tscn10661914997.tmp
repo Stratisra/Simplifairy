@@ -128,7 +128,7 @@ enemy_scenes = Array[PackedScene]([ExtResource("3_8gbba"), ExtResource("5_kry3j"
 player = NodePath("../Player")
 base_spawn_count = 1
 difficulty_scale_rate = 0.1
-chance_elite = 0.1
+chance_elite = 0.0
 chance_fast = 0.0
 chance_shielded = 0.0
 chance_exploding = 0.0
@@ -209,38 +209,22 @@ layout_mode = 2
 texture = ExtResource("9_ynf5e")
 
 [node name="Button1" type="TextureButton" parent="DowngradeUI/HBoxContainer/SimplificationCard" unique_id=1866352479]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.000002
-offset_top = -8.000002
-offset_right = 8.000002
-offset_bottom = 8.000002
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_left = 24.666668
+offset_top = 26.666668
+offset_right = 40.666668
+offset_bottom = 66.66667
 texture_normal = ExtResource("10_hptm8")
 
 [node name="SimplificationCard2" type="TextureRect" parent="DowngradeUI/HBoxContainer" unique_id=2004460075]
 layout_mode = 2
 texture = ExtResource("9_ynf5e")
 
-[node name="Button2" type="TextureButton" parent="DowngradeUI/HBoxContainer/SimplificationCard2" unique_id=473346767]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.000002
-offset_top = -8.000002
-offset_right = 8.000002
-offset_bottom = 8.000002
-grow_horizontal = 2
-grow_vertical = 2
-texture_normal = ExtResource("10_hptm8")
+[node name="Button2" type="TextureButton" parent="DowngradeUI/HBoxContainer/SimplificationCard2" unique_id=1507632983]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 12.0
+offset_bottom = 40.0
 
 [node name="DowngradeTimer" type="Timer" parent="." unique_id=998177085]
 wait_time = 10.0

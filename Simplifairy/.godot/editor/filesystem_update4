@@ -1,8 +1,6 @@
-res://enemy_bullet.gd
-res://Scenes/enemy_bullet.tscn
-res://Scenes/basic_enemy.tscn
-res://basic_enemy.gd
+res://Scenes/main.tscn
+res://Scenes/main.gd
 res://Scenes/player.gd
-res://Scenes/fire_hazard.tscn
-res://fire_hazard.gd
 res://Scenes/player.tscn
+res://Scenes/health_bar.gd
+res://Scenes/enemy_spawner.gd

@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bfklu1cdk0f7n" path="res://Sprites/Wand.png" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://bjkiramkd0dfm" path="res://Scenes/camera_2d.gd" id="5_fkybt"]
 [ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="6_x3wgy"]
+[ext_resource type="Script" uid="uid://dkdsmlo0ahpki" path="res://Scenes/health_bar.gd" id="7_3smsa"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rq33d"]
 animations = [{
@@ -27,14 +28,21 @@ animations = [{
 radius = 17.0
 height = 54.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oox86"]
+bg_color = Color(1.92523e-07, 0.08228948, 0.120965905, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8jyw"]
+bg_color = Color(1, 0, 0.23137255, 1)
+
 [node name="Player" type="CharacterBody2D" unique_id=889344565 node_paths=PackedStringArray("sprite", "wand_pivot", "muzzle", "wand_sprite") groups=["player"]]
 z_index = 2
 script = ExtResource("1_cvnsp")
 wand_aoe_radius = 200.0
-speed = 350.0
+speed = 300.0
 friction = 1.0
 acceleration = 0.5
-dash_speed = 1000.0
+dash_speed = 1500.0
 sprite = NodePath("AnimatedSprite2D")
 projectile_scene = ExtResource("2_vgqql")
 wand_pivot = NodePath("WandPivot")
@@ -78,10 +86,13 @@ vertical_offset = 58.0
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=792304120]
 offset_left = -50.0
-offset_top = -63.0
+offset_top = -72.0
 offset_right = 50.0
-offset_bottom = -55.0
+offset_bottom = -64.0
+theme_override_styles/background = SubResource("StyleBoxFlat_oox86")
+theme_override_styles/fill = SubResource("StyleBoxFlat_v8jyw")
 value = 30.0
 show_percentage = false
+script = ExtResource("7_3smsa")
 
 [connection signal="timeout" from="WandPivot/ShootTimer" to="." method="_on_shoot_timer_timeout"]

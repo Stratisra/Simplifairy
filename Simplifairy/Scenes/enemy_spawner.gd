@@ -46,27 +46,41 @@ func _on_spawn_timer_timeout() -> void:
 	spawn_enemy_cluster()
 
 func spawn_enemy_cluster() -> void:
-	var current_wave_count = base_spawn_count + int(time_elapsed / 60.0 * difficulty_scale_rate * 10.0)
+	# 1. EXPONENTIAL SCALING: Starts slow, gets insane by minute 4.
+	var time_factor = time_elapsed / 60.0 # How many minutes have passed
+	var current_wave_count = base_spawn_count + int(pow(time_factor * difficulty_scale_rate, 2.0) * 30.0)
 	
-	var base_angle: float = randf_range(0.0, TAU)
-	var base_distance: float = randf_range(min_spawn_distance, max_spawn_distance)
-	var cluster_center: Vector2 = player.global_position + (Vector2.RIGHT.rotated(base_angle) * base_distance)
+	# 2. FLANKING: Divide the wave into multiple groups surrounding the player
+	# Starts at 2-3 angles, but by minute 4 it spawns from 6+ angles at once!
+	var num_clusters = randi_range(2, 3) + int(time_factor) 
 	
-	for i in range(current_wave_count):
-		var random_scene = enemy_scenes.pick_random()
-		if random_scene == null:
-			continue
+	# Make sure we don't try to divide by zero!
+	var enemies_per_cluster = max(1, current_wave_count / num_clusters)
+	
+	# 3. SPAWN THE GROUPS
+	for c in range(num_clusters):
+		# Pick a random angle and distance for THIS specific group
+		var base_angle: float = randf_range(0.0, TAU)
+		var base_distance: float = randf_range(min_spawn_distance, max_spawn_distance)
+		var cluster_center: Vector2 = player.global_position + (Vector2.RIGHT.rotated(base_angle) * base_distance)
+		
+		for i in range(enemies_per_cluster):
+			var random_scene = enemy_scenes.pick_random()
+			if random_scene == null:
+				continue
+				
+			var enemy = random_scene.instantiate()
+			apply_random_modifiers(enemy)
 			
-		var enemy = random_scene.instantiate()
-		
-		# Apply the dynamic effects before adding it to the world
-		apply_random_modifiers(enemy)
-		
-		var random_cluster_offset = Vector2(randf_range(-40, 40), randf_range(-40, 40))
-		enemy.global_position = cluster_center + random_cluster_offset
-		
-		enemy.add_to_group("enemy")
-		get_tree().current_scene.add_child(enemy)
+			# Dynamic Spread: The bigger the wave, the wider the cluster is so they don't overlap in one dot
+			var spread = 40.0 + (enemies_per_cluster * 3.0) 
+			var random_cluster_offset = Vector2(randf_range(-spread, spread), randf_range(-spread, spread))
+			enemy.global_position = cluster_center + random_cluster_offset
+			
+			enemy.add_to_group("enemy")
+			
+			# call_deferred is safer when spawning massive amounts of physics bodies in one frame!
+			get_tree().current_scene.call_deferred("add_child", enemy)
 
 # ==========================================
 # MODIFIER ENGINE
