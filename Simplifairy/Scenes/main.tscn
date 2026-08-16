@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cxjr82utgc8i0" path="res://Scenes/fast_enemy.tscn" id="6_6bp64"]
 [ext_resource type="Texture2D" uid="uid://babucxr0w7vok" path="res://Sprites/simplification card.png" id="9_ynf5e"]
 [ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="10_hptm8"]
+[ext_resource type="Script" uid="uid://bw5lnu1wnpi05" path="res://Scenes/game_over_screen.gd" id="11_d1ilt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kry3j"]
 texture = ExtResource("4_jjvhh")
@@ -122,6 +123,7 @@ enemySpawner = NodePath("EnemySpawner")
 
 [node name="Player" parent="." unique_id=889344565 instance=ExtResource("1_jjgbg")]
 position = Vector2(531, 317)
+reload = false
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=922322114 node_paths=PackedStringArray("player")]
 script = ExtResource("2_bo1nx")
@@ -172,6 +174,7 @@ shape = SubResource("WorldBoundaryShape2D_oox86")
 
 [node name="DowngradeUI" type="CanvasLayer" parent="." unique_id=1725946615]
 process_mode = 3
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="DowngradeUI" unique_id=1493710411]
 offset_left = -108.0
@@ -287,3 +290,6 @@ offset_bottom = 72.0
 theme_override_font_sizes/font_size = 32
 text = "Wave 1
 "
+
+[node name="GameOverScreen" type="CanvasLayer" parent="." unique_id=965257890]
+script = ExtResource("11_d1ilt")

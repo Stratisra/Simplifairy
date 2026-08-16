@@ -39,6 +39,7 @@ extends CharacterBody2D
 @export var reload: bool = false
 
 var reload_counter: int = 0
+var is_reloading: bool = false
 var fire_cooldown: float = 0.0
 var current_health: float = 100.0
 var is_invincible: bool = false
@@ -182,12 +183,22 @@ func start_dash(input_direction: Vector2):
 		dash_tween.tween_property(sprite, "scale", Vector2.ONE * 4, dash_duration)\
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
+func flip():
+	var tween = create_tween()
+	tween.tween_property(wand_sprite, "rotation", TAU, 0.7).as_relative()
+	await tween.finished
+
 func shoot():
+	if is_reloading:
+		return
+
 	if reload:
 		reload_counter += 1
 		if reload_counter == 6:
 			reload_counter = 0
-			#flip
+			is_reloading = true
+			await flip()
+			is_reloading = false
 			return
 	if projectile_scene and muzzle:
 		var bullet = projectile_scene.instantiate()
@@ -271,6 +282,23 @@ func die():
 	set_physics_process(false)
 	$CollisionShape2D.set_deferred("disabled", true)
 
-	# For now, just restart the level when the player dies
-	# Later, you can show a Game Over UI screen here instead!
-	get_tree().reload_current_scene()
+	# --- NEW: TRIGGER THE GAME OVER SCREEN ---
+	var main_level = get_tree().current_scene
+	var game_over_screen = main_level.get_node_or_null("GameOverScreen")
+	
+	if game_over_screen and main_level:
+		# Use .get() to safely grab variables from the Main Level script
+		var wave = main_level.get("current_wave")
+		var time = main_level.get("time_survived")
+		var kills = main_level.get("enemies_killed")
+		
+		# Failsafe in case the variables aren't found for some reason
+		if wave == null: wave = 1
+		if time == null: time = 0.0
+		if kills == null: kills = 0
+		
+		# Send the stats and start the cinematic!
+		game_over_screen.trigger_game_over(wave, time, kills)
+	else:
+		print("Warning: GameOverScreen node not found in Main Level!")
+		get_tree().reload_current_scene()

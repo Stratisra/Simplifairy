@@ -52,6 +52,7 @@ wand_pivot = NodePath("WandPivot")
 muzzle = NodePath("WandPivot/Muzzle")
 wand_sprite = NodePath("WandPivot/Wand")
 auto_shoot = false
+reload = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1252146837]
 position = Vector2(0, 42)

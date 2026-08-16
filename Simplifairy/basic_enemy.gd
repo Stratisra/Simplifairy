@@ -1,6 +1,6 @@
 class_name BaseEnemy
 extends CharacterBody2D
-
+@onready var death_sound: AudioStreamPlayer2D = $DeathSound
 @export_group("Stats")
 @export var speed: float = 90.0
 @export var max_health: float = 30.0

@@ -36,7 +36,7 @@ collision_layer = 2
 script = ExtResource("1_xpf0k")
 fire_hazard_scene = ExtResource("2_ft458")
 drop_distance = 30.0
-speed = 150.0
+speed = 500.0
 sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]

@@ -2,7 +2,7 @@ extends Node2D
 
 @export var player: CharacterBody2D
 @export var enemySpawner: Node2D
-
+var time_survived: float = 0.0
 # ==========================================
 # ⚙️ WAVE BALANCING CONTROL PANEL ⚙️
 # Change these in the Godot Inspector!
@@ -38,7 +38,7 @@ var available_downgrades = [
 	{"id": "lose_tracking", "title": "Blind Fire", "description": "Bullets no longer home in","texture": preload("res://Sprites/Icons/no_homing.png")},
 	{"id": "manual_shoot", "title": "Jamming", "description": "Disable Auto-Shoot","texture": preload("res://Sprites/Icons/semi_auto.png")},
 	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn","texture": preload('res://Sprites/elite_enemies.png')},
-	{"id": "reload", "title": "Reload needed", "description": "Every 5 shots the wand reloads"}
+	{"id": "reload", "title": "Reload needed", "description": "Every 5 shots the wand reloads","texture": preload("res://Sprites/reload.png")}
 ]
 
 var current_choice_1: Dictionary
@@ -70,6 +70,7 @@ func _ready():
 # --- WAVE TIMER AND WIN CHECK ---
 func _process(delta: float):
 	if is_wave_active and not get_tree().paused:
+		time_survived += delta  # <--- ADD THIS LINE HERE!
 		wave_time_left -= delta
 		
 		# Format wave timer (Countdown)
@@ -83,7 +84,6 @@ func _process(delta: float):
 		if enemySpawner:
 			all_spawned = enemySpawner.enemies_spawned >= enemySpawner.enemies_to_spawn
 			
-		# End wave if time runs out, OR if every single enemy for this wave is dead!
 		if wave_time_left <= 0.0 or (all_spawned and enemies_alive == 0):
 			end_wave()
 

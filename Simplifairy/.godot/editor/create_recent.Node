@@ -1,7 +1,7 @@
+CanvasLayer
+AudioStreamPlayer2D
 Label
 AudioStreamPlayer
-AudioStreamPlayer2D
-CanvasLayer
 TextureRect
 ColorRect
 TextureProgressBar

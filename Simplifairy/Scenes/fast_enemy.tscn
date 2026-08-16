@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cxjr82utgc8i0"]
 
-[ext_resource type="Script" uid="uid://dkiwyx0fqp82o" path="res://basic_enemy.gd" id="1_k1dfe"]
+[ext_resource type="Script" uid="uid://571nu0pt0q2j" path="res://Scenes/fast_enemy.gd" id="1_mgkwl"]
 [ext_resource type="Texture2D" uid="uid://bno4kykebv87l" path="res://Sprites/FastEnemySpriteSheet.png" id="2_k1dfe"]
 [ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="3_mgkwl"]
 
@@ -36,9 +36,10 @@ radius = 23.021729
 z_index = 1
 collision_layer = 2
 safe_margin = 14.386
-script = ExtResource("1_k1dfe")
+script = ExtResource("1_mgkwl")
+dash_range = 300.0
+dash_speed = 1500.0
 speed = 300.0
-knockback_decay = 5.0
 sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]
