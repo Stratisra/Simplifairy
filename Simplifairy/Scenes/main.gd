@@ -41,10 +41,9 @@ func _ready():
 	
 	hbox_base_y = hbox.position.y
 	
-	# Set the pivot points to the center so they scale outward during the selection animation!
-	# (Assuming your cards are 200x300. Change this to half your card size if they are different!)
-	button_1.pivot_offset = Vector2(100, 150)
-	button_2.pivot_offset = Vector2(100, 150)
+	# --- FIX: Set the pivot points to the center of the CARDS (the parent nodes), not the buttons! ---
+	button_1.get_parent().pivot_offset = Vector2(100, 150)
+	button_2.get_parent().pivot_offset = Vector2(100, 150)
 	
 	downgrade_ui.hide()
 
@@ -104,6 +103,10 @@ func play_select_animation(chosen_btn: TextureButton, other_btn: TextureButton, 
 	chosen_btn.disabled = true
 	other_btn.disabled = true
 	
+	# --- FIX: Grab the actual Card Nodes (parents) so we animate the whole thing ---
+	var chosen_card = chosen_btn.get_parent()
+	var other_card = other_btn.get_parent()
+	
 	if idle_tween and idle_tween.is_valid():
 		idle_tween.kill()
 		
@@ -113,21 +116,21 @@ func play_select_animation(chosen_btn: TextureButton, other_btn: TextureButton, 
 	select_tween.tween_property(color_rect, "modulate:a", 0.0, 0.4)
 	
 	# 2. The chosen card flashes white, gets slightly bigger, and fades out
-	select_tween.tween_property(chosen_btn, "scale", Vector2(1.3, 1.3), 0.3)
-	select_tween.tween_property(chosen_btn, "modulate:a", 0.0, 0.3)
+	select_tween.tween_property(chosen_card, "scale", Vector2(1.3, 1.3), 0.3)
+	select_tween.tween_property(chosen_card, "modulate:a", 0.0, 0.3)
 	
 	# 3. The card they DID NOT choose shrinks to nothing
-	select_tween.tween_property(other_btn, "scale", Vector2.ZERO, 0.3)\
+	select_tween.tween_property(other_card, "scale", Vector2.ZERO, 0.3)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	
 	# WAIT for the animation to completely finish before resuming the game!
 	await select_tween.finished
 	
 	# Reset the cards back to normal so they are ready for the NEXT wave
-	chosen_btn.scale = Vector2.ONE
-	other_btn.scale = Vector2.ONE
-	chosen_btn.modulate.a = 1.0
-	other_btn.modulate.a = 1.0
+	chosen_card.scale = Vector2.ONE
+	other_card.scale = Vector2.ONE
+	chosen_card.modulate.a = 1.0
+	other_card.modulate.a = 1.0
 	
 	# Apply logic and resume
 	apply_downgrade(choice)

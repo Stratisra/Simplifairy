@@ -4,3 +4,7 @@ res://Scenes/player.gd
 res://Scenes/player.tscn
 res://Scenes/health_bar.gd
 res://Scenes/enemy_spawner.gd
+res://Scenes/title_screen.tscn
+res://Scenes/button.gd
+res://Scenes/quit.gd
+res://Scenes/pause_menu.tscn

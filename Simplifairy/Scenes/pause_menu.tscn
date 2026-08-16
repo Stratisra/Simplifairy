@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://on30cbf3h35f"]
+
+[ext_resource type="Script" uid="uid://b5mrqi8qxpxx4" path="res://Scenes/pause_menu.gd" id="1_k0w1u"]
+[ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="2_1och7"]
+
+[node name="PauseMenu" type="Control" unique_id=25944870]
+process_mode = 3
+layout_mode = 3
+anchor_left = -0.5
+anchor_top = -0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 576.0
+offset_top = 324.0
+offset_right = -576.0
+offset_bottom = -324.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k0w1u")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1419311576]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Resume" type="TextureButton" parent="VBoxContainer" unique_id=1290895829]
+layout_mode = 2
+texture_normal = ExtResource("2_1och7")
+stretch_mode = 0
+
+[node name="ReturnToTitle" type="TextureButton" parent="VBoxContainer" unique_id=2112708133]
+layout_mode = 2
+texture_normal = ExtResource("2_1och7")
+stretch_mode = 0
+
+[connection signal="pressed" from="VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="VBoxContainer/ReturnToTitle" to="." method="_on_return_to_title_pressed"]

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://3xnkeki0u2jg" path="res://Scenes/magic_bullet.tscn" id="2_vgqql"]
 [ext_resource type="Texture2D" uid="uid://bfklu1cdk0f7n" path="res://Sprites/Wand.png" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://bjkiramkd0dfm" path="res://Scenes/camera_2d.gd" id="5_fkybt"]
+[ext_resource type="PackedScene" uid="uid://on30cbf3h35f" path="res://Scenes/pause_menu.tscn" id="6_8erm5"]
 [ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="6_x3wgy"]
 [ext_resource type="Script" uid="uid://dkdsmlo0ahpki" path="res://Scenes/health_bar.gd" id="7_3smsa"]
 
@@ -79,6 +80,8 @@ one_shot = true
 [node name="Camera2D" type="Camera2D" parent="." unique_id=921869448]
 zoom = Vector2(0.675, 0.675)
 script = ExtResource("5_fkybt")
+
+[node name="PauseMenu" parent="Camera2D" unique_id=25944870 instance=ExtResource("6_8erm5")]
 
 [node name="DropShadow" parent="." unique_id=2123531142 instance=ExtResource("6_x3wgy")]
 shadow_width = 30.0
