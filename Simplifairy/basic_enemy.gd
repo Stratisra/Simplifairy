@@ -17,8 +17,15 @@ var is_exploding: bool = false
 var is_splitting: bool = false
 var is_erratic: bool = false
 var is_ghost: bool = false
-var erratic_timer: float = 0.0 # Used to calculate the zig-zag
+var erratic_timer: float = 0.0
 # ----------------------
+
+# --- SMART AI VARIABLES ---
+var ai_behavior: int = 0     # 0 = Direct, 1 = Flanker, 2 = Hunter (Predictive)
+var sway_timer: float = 0.0  # Controls the organic wobbling
+var sway_speed: float = 0.0
+var sway_amount: float = 0.0
+# --------------------------
 
 var current_health: float
 var player: Node2D
@@ -32,8 +39,20 @@ func _ready():
 	current_health = max_health
 	player = get_tree().get_first_node_in_group("player")
 	
-	# Randomize the erratic timer so multiple erratic enemies don't move in perfectly synchronized waves
 	erratic_timer = randf_range(0.0, 10.0)
+	
+	# --- ASSIGN SMART AI PERSONALITY ---
+	var roll = randf()
+	if roll < 0.4:
+		ai_behavior = 0 # 40% are basic direct chasers
+	elif roll < 0.7:
+		ai_behavior = 1 # 30% are flankers (wide arcs)
+	else:
+		ai_behavior = 2 # 30% are hunters (lead the target)
+		
+	sway_timer = randf_range(0.0, 100.0)
+	sway_speed = randf_range(1.0, 3.0)
+	sway_amount = randf_range(-0.6, 0.6) # Flankers will multiply this
 
 func _physics_process(delta):
 	if not player:
@@ -45,12 +64,27 @@ func _physics_process(delta):
 # --- MODULAR FUNCTIONS ---
 
 func movement(delta: float):
-	current_direction = global_position.direction_to(player.global_position)
+	sway_timer += delta * sway_speed
+	var target_pos = player.global_position
 	
-	# MODIFIER: ERRATIC
+	# --- 1. PREDICTIVE MOVEMENT (Hunters) ---
+	if ai_behavior == 2 and "velocity" in player:
+		# Aim slightly ahead of where the player is currently running
+		target_pos += player.velocity * 0.4 
+		
+	var base_direction = global_position.direction_to(target_pos)
+	
+	# --- 2. ORGANIC SWAY (Flankers & Chasers) ---
+	var current_sway = sin(sway_timer) * sway_amount
+	if ai_behavior == 1:
+		current_sway *= 2.5 # Flankers take very wide arcs
+		
+	current_direction = base_direction.rotated(current_sway)
+	
+	# MODIFIER: ERRATIC (Overrides normal sway with violent zig-zags)
 	if is_erratic:
 		erratic_timer += delta * 8.0
-		current_direction = current_direction.rotated(sin(erratic_timer) * 1.2)
+		current_direction = base_direction.rotated(sin(erratic_timer) * 1.2)
 	
 	# MODIFIER: GHOST
 	var separation_vector = Vector2.ZERO
@@ -75,12 +109,10 @@ func movement(delta: float):
 	move_and_slide()
 	
 	# --- CONTACT DAMAGE ---
-	# Loop through everything this enemy just physically bumped into
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
-		# If the thing we touched is the player, hurt them!
 		if collider and collider.is_in_group("player"):
 			if collider.has_method("take_damage"):
 				collider.take_damage(damage)
@@ -121,10 +153,8 @@ func die(source_position: Vector2 = Vector2.ZERO):
 	set_physics_process(false)
 	$CollisionShape2D.set_deferred("disabled", true)
 	
-	# --- NEW: UPDATE THE KILL SCORE ---
 	if get_tree().current_scene.has_method("add_kill"):
 		get_tree().current_scene.add_kill()
-	# ----------------------------------
 	
 	if sprite:
 		var fling_dir = Vector2.UP
@@ -165,13 +195,8 @@ func die(source_position: Vector2 = Vector2.ZERO):
 		fx.global_position = global_position
 		get_tree().current_scene.add_child(fx)
 	
-	# --- MODIFIER ON-DEATH TRIGGERS ---
-	if is_exploding:
-		trigger_explosion()
-		
-	if is_splitting:
-		trigger_split()
-	# ----------------------------------
+	if is_exploding: trigger_explosion()
+	if is_splitting: trigger_split()
 	
 	queue_free()
 
@@ -179,12 +204,10 @@ func trigger_explosion():
 	var explosion_radius = 120.0
 	var explosion_damage = 25.0
 	
-	# Hurt the player if they are too close when the corpse lands
 	if is_instance_valid(player) and global_position.distance_to(player.global_position) <= explosion_radius:
 		if player.has_method("take_damage"):
 			player.take_damage(explosion_damage)
 			
-	# Optional: Hurt other enemies in the blast radius!
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	for e in enemies:
 		if is_instance_valid(e) and e != self:
@@ -193,30 +216,18 @@ func trigger_explosion():
 					e.take_damage(explosion_damage * 2.0, global_position, 300.0)
 
 func trigger_split():
-	# Load whatever scene this enemy currently is (works for ranged, melee, etc.)
 	var current_scene_path = scene_file_path
 	var loaded_scene = load(current_scene_path)
-	if not loaded_scene:
-		return
+	if not loaded_scene: return
 		
 	for i in range(2):
 		var mini_enemy = loaded_scene.instantiate()
-		
-		# Offset them slightly so they don't spawn perfectly inside each other
 		mini_enemy.global_position = global_position + Vector2(randf_range(-20, 20), randf_range(-20, 20))
-		
-		# Scale down stats and size
 		mini_enemy.scale = self.scale * 0.6
 		mini_enemy.max_health = self.max_health * 0.4
 		mini_enemy.damage = self.damage * 0.5
-		mini_enemy.speed = self.speed * 1.2 # Make the little ones faster!
-		
-		# VERY IMPORTANT: Turn off splitting so they don't infinitely multiply
+		mini_enemy.speed = self.speed * 1.2
 		mini_enemy.is_splitting = false 
-		
-		# Inherit the color of the parent
 		mini_enemy.modulate = self.modulate 
-		
-		# Add to scene safely
 		get_tree().current_scene.call_deferred("add_child", mini_enemy)
 		mini_enemy.add_to_group("enemy")

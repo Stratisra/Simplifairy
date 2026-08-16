@@ -4,3 +4,8 @@ res://backround_music.tscn
 res://Scenes/player.gd
 res://Scenes/player.tscn
 res://Scenes/main.gd
+res://Scenes/enemy_spawner.gd
+res://Scenes/basic_enemy.tscn
+res://basic_enemy.gd
+res://Scenes/fire_enemy.tscn
+res://Scenes/ranged_enemy.tscn

@@ -41,6 +41,7 @@ script = ExtResource("1_5x7gc")
 enemy_projectile = ExtResource("2_1qm41")
 shoot_range = 500.0
 fire_rate = 1.0
+speed = 130.0
 sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]

@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://djsngtgxtmgwv" path="res://Music and sound effects/Button1.mp3" id="5_0061g"]
 [ext_resource type="Script" uid="uid://dfo4tb6fch4vc" path="res://Scenes/quit.gd" id="6_8mikk"]
 [ext_resource type="Texture2D" uid="uid://vy6u7c73hklh" path="res://Sprites/FireEnemySprite1.png" id="6_n82rj"]
+[ext_resource type="AudioStream" uid="uid://746cqa6bf6yk" path="res://Music and sound effects/TitleScreen.mp3" id="7_6vd4x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4gxqj"]
 outline_size = 4
@@ -107,6 +108,47 @@ vertical_alignment = 1
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="VBoxContainer/StartButton" unique_id=1762276875]
 stream = ExtResource("5_0061g")
 
+[node name="FairySprite1Alpha" type="Sprite2D" parent="VBoxContainer/StartButton" unique_id=2052685527]
+z_index = 1
+position = Vector2(-169.99998, 76)
+rotation = 0.22514747
+scale = Vector2(8, 8)
+texture = ExtResource("4_12m1t")
+
+[node name="FairySprite1Alpha2" type="Sprite2D" parent="VBoxContainer/StartButton/FairySprite1Alpha" unique_id=915840451]
+modulate = Color(8.826238e-05, 8.826238e-05, 8.826238e-05, 0.5019608)
+z_index = -4
+position = Vector2(2.5127563, 1.7327595)
+texture = ExtResource("4_12m1t")
+
+[node name="MinionsSprite1AlphaSheet" type="Sprite2D" parent="VBoxContainer/StartButton" unique_id=1741919576]
+position = Vector2(321.5, 27)
+rotation = 2.8640852
+scale = Vector2(8, -8)
+texture = ExtResource("5_6vd4x")
+hframes = 2
+
+[node name="MinionsSprite1AlphaSheet2" type="Sprite2D" parent="VBoxContainer/StartButton/MinionsSprite1AlphaSheet" unique_id=2118582195]
+modulate = Color(0, 0, 0, 0.5019608)
+z_index = -1
+position = Vector2(1.5442619, 1.3147354)
+texture = ExtResource("5_6vd4x")
+hframes = 2
+
+[node name="FireEnemySprite1" type="Sprite2D" parent="VBoxContainer/StartButton" unique_id=1417252320]
+position = Vector2(282, 128.5)
+rotation = 3.1415927
+scale = Vector2(8, -8)
+texture = ExtResource("6_n82rj")
+hframes = 2
+
+[node name="MinionsSprite1AlphaSheet2" type="Sprite2D" parent="VBoxContainer/StartButton/FireEnemySprite1" unique_id=435269994]
+modulate = Color(0, 0, 0, 0.5019608)
+z_index = -1
+position = Vector2(1.5442619, 1.3147354)
+texture = ExtResource("5_6vd4x")
+hframes = 2
+
 [node name="Quit" type="TextureButton" parent="VBoxContainer" unique_id=23272524]
 layout_mode = 2
 texture_normal = ExtResource("2_p3fck")
@@ -123,45 +165,9 @@ text = "Quit"
 label_settings = SubResource("LabelSettings_4gxqj")
 vertical_alignment = 1
 
-[node name="FairySprite1Alpha" type="Sprite2D" parent="VBoxContainer/Quit" unique_id=2052685527]
-z_index = 1
-position = Vector2(-169.99998, 8)
-rotation = 0.22514747
-scale = Vector2(8, 8)
-texture = ExtResource("4_12m1t")
-
-[node name="FairySprite1Alpha2" type="Sprite2D" parent="VBoxContainer/Quit/FairySprite1Alpha" unique_id=915840451]
-modulate = Color(8.826238e-05, 8.826238e-05, 8.826238e-05, 0.5019608)
-z_index = -4
-position = Vector2(2.5127563, 1.7327595)
-texture = ExtResource("4_12m1t")
-
-[node name="MinionsSprite1AlphaSheet" type="Sprite2D" parent="VBoxContainer/Quit" unique_id=1741919576]
-position = Vector2(321.5, -41)
-rotation = -0.27750736
-scale = Vector2(-8, 8)
-texture = ExtResource("5_6vd4x")
-hframes = 2
-
-[node name="MinionsSprite1AlphaSheet2" type="Sprite2D" parent="VBoxContainer/Quit/MinionsSprite1AlphaSheet" unique_id=2118582195]
-modulate = Color(0, 0, 0, 0.5019608)
-z_index = -1
-position = Vector2(1.5442619, 1.3147354)
-texture = ExtResource("5_6vd4x")
-hframes = 2
-
-[node name="FireEnemySprite1" type="Sprite2D" parent="VBoxContainer/Quit" unique_id=1417252320]
-position = Vector2(282, 60.5)
-scale = Vector2(-8, 8)
-texture = ExtResource("6_n82rj")
-hframes = 2
-
-[node name="MinionsSprite1AlphaSheet2" type="Sprite2D" parent="VBoxContainer/Quit/FireEnemySprite1" unique_id=435269994]
-modulate = Color(0, 0, 0, 0.5019608)
-z_index = -1
-position = Vector2(1.5442619, 1.3147354)
-texture = ExtResource("5_6vd4x")
-hframes = 2
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=61562505]
+stream = ExtResource("7_6vd4x")
+autoplay = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
