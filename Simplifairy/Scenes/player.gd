@@ -45,11 +45,12 @@ var current_health: float = 100.0
 var is_invincible: bool = false
 var player_hit_tween: Tween
 
-@onready var health_bar: ProgressBar = $HealthBar
+# --- NEW: GOD MODE VARIABLE ---
+var god_mode: bool = false
+# ------------------------------
 
-# --- NEW: Grab the sound node! ---
+@onready var health_bar: ProgressBar = $HealthBar
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
-# ---------------------------------
 
 var time_moving: float = 0.0
 var base_sprite_y: float = 0.0
@@ -104,14 +105,11 @@ func _physics_process(delta):
 	if is_dashing:
 		dash_timer -= delta
 		
-		# --- NEW: Steerable Dash! ---
-		# If you are pressing movement keys, it updates the direction mid-dash.
-		# If you let go, you keep sliding in the last direction you pressed!
+		# Steerable Dash
 		if direction.length() > 0:
 			dash_direction = direction.normalized()
 			
 		velocity = dash_direction * dash_speed
-		# ----------------------------
 		
 		if dash_timer <= 0.0:
 			is_dashing = false
@@ -145,12 +143,10 @@ func _physics_process(delta):
 		
 	if not auto_shoot:
 		if wand_hold_to_shoot:
-			# HOLD MODE: Uses is_action_pressed (triggers repeatedly while held down)
 			if Input.is_action_pressed("shoot") and fire_cooldown <= 0.0:
 				shoot()
 				fire_cooldown = fire_rate
 		else:
-			# CLICK MODE: Uses is_action_just_pressed (forces you to click every single time)
 			if Input.is_action_just_pressed("shoot") and fire_cooldown <= 0.0:
 				shoot()
 				fire_cooldown = fire_rate
@@ -200,6 +196,7 @@ func shoot():
 			await flip()
 			is_reloading = false
 			return
+			
 	if projectile_scene and muzzle:
 		var bullet = projectile_scene.instantiate()
 		bullet.global_position = muzzle.global_position
@@ -212,12 +209,8 @@ func shoot():
 		
 		get_tree().current_scene.add_child(bullet)
 		
-		# --- NEW: Play the sound! ---
 		if shoot_sound:
-			# If the player shoots really fast, this forces the sound to restart 
-			# instantly so it doesn't get cut off or skipped!
 			shoot_sound.play(0.0) 
-		# ----------------------------
 		
 		# Visual Feedback (Recoil & Glow)
 		if wand_sprite:
@@ -234,7 +227,6 @@ func shoot():
 			shoot_tween.tween_property(wand_sprite, "position:x", base_wand_pos.x, 0.15)\
 				.set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
 
-# This remains here to handle your Vampire Survivors auto-fire Timer!
 func _on_shoot_timer_timeout():
 	if auto_shoot:
 		shoot()
@@ -242,6 +234,11 @@ func _on_shoot_timer_timeout():
 # --- HEALTH & DAMAGE LOGIC ---
 
 func take_damage(amount: float):
+	# --- DEVELOPER CHEAT: GOD MODE CHECK ---
+	if god_mode:
+		return
+	# ---------------------------------------
+
 	# Ignore damage if we just got hit, or if we are currently dashing!
 	if is_invincible or is_dashing:
 		return
@@ -249,18 +246,14 @@ func take_damage(amount: float):
 	current_health -= amount
 	print("Player took damage! Health: ", current_health)
 	
-	# Update the visual bar
 	if health_bar:
 		health_bar.value = current_health
 	
 	if current_health <= 0:
 		die()
 	else:
-		# Trigger Invincibility and visual feedback
 		is_invincible = true
 		flash_red()
-		
-		# Create a temporary timer that turns off invincibility after i_frame_duration
 		get_tree().create_timer(i_frame_duration).timeout.connect(func(): is_invincible = false)
 
 func flash_red():
@@ -269,36 +262,42 @@ func flash_red():
 			player_hit_tween.kill()
 			
 		player_hit_tween = create_tween()
-		
-		# Turn the player bright red and slightly transparent
 		sprite.modulate = Color(1.0, 0.0, 0.0, 0.8)
-		
-		# Fade back to normal white over the duration of the I-frames
 		player_hit_tween.tween_property(sprite, "modulate", Color.WHITE, i_frame_duration)
 
 func die():
 	print("Player Died!")
-	# Stop player from moving or shooting
 	set_physics_process(false)
 	$CollisionShape2D.set_deferred("disabled", true)
 
-	# --- NEW: TRIGGER THE GAME OVER SCREEN ---
 	var main_level = get_tree().current_scene
 	var game_over_screen = main_level.get_node_or_null("GameOverScreen")
 	
 	if game_over_screen and main_level:
-		# Use .get() to safely grab variables from the Main Level script
 		var wave = main_level.get("current_wave")
 		var time = main_level.get("time_survived")
 		var kills = main_level.get("enemies_killed")
 		
-		# Failsafe in case the variables aren't found for some reason
 		if wave == null: wave = 1
 		if time == null: time = 0.0
 		if kills == null: kills = 0
 		
-		# Send the stats and start the cinematic!
 		game_over_screen.trigger_game_over(wave, time, kills)
 	else:
 		print("Warning: GameOverScreen node not found in Main Level!")
 		get_tree().reload_current_scene()
+
+# ==========================================
+# 🛠️ DEVELOPER CHEAT: GOD MODE TOGGLE 🛠️
+# ==========================================
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_G:
+			god_mode = not god_mode
+			
+			if god_mode:
+				print("GOD MODE: ON")
+				modulate = Color(0.5, 1.0, 1.0) # Turn player blue
+			else:
+				print("GOD MODE: OFF")
+				modulate = Color.WHITE

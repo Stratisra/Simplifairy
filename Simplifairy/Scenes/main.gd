@@ -3,9 +3,9 @@ extends Node2D
 @export var player: CharacterBody2D
 @export var enemySpawner: Node2D
 var time_survived: float = 0.0
+
 # ==========================================
 # ⚙️ WAVE BALANCING CONTROL PANEL ⚙️
-# Change these in the Godot Inspector!
 # ==========================================
 @export_group("Wave Balancing")
 @export var wave_duration: float = 60.0            # Seconds to survive the wave
@@ -15,7 +15,7 @@ var time_survived: float = 0.0
 # --- HUD References ---
 @onready var time_label: Label = $HUD/TimerLabel
 @onready var kill_label: Label = $HUD/KillLabel
-@onready var wave_label: Label = $HUD/WaveLabel # <--- ADDED WAVE LABEL
+@onready var wave_label: Label = $HUD/WaveLabel 
 
 var enemies_killed: int = 0
 var kill_tween: Tween
@@ -33,7 +33,7 @@ var is_wave_active: bool = false
 
 var fallback_texture = preload('res://Sprites/Star.png')
 var available_downgrades = [
-	{"id": "lose_dash", "title": "You don't need shoes", "description": "Increase dash cooldown"},
+	{"id": "lose_dash", "title": "You don't need shoes", "description": "Increase dash cooldown","texture": preload("res://Sprites/busted_shoes.png")},
 	{"id": "lose_aoe", "title": "Dull Wand", "description": "Wand loses Area of Effect","texture": preload('res://Sprites/Icons/smaller_aoe.png')},
 	{"id": "lose_tracking", "title": "Blind Fire", "description": "Bullets no longer home in","texture": preload("res://Sprites/Icons/no_homing.png")},
 	{"id": "manual_shoot", "title": "Jamming", "description": "Disable Auto-Shoot","texture": preload("res://Sprites/Icons/semi_auto.png")},
@@ -63,48 +63,59 @@ func _ready():
 	kill_label.pivot_offset = kill_label.size / 2.0 
 	
 	downgrade_ui.hide()
-	
-	# Start the very first wave!
 	start_new_wave()
 
-# --- WAVE TIMER AND WIN CHECK ---
 func _process(delta: float):
 	if is_wave_active and not get_tree().paused:
-		time_survived += delta  # <--- ADD THIS LINE HERE!
+		time_survived += delta 
 		wave_time_left -= delta
 		
-		# Format wave timer (Countdown)
-		var w_minutes = max(0, int(wave_time_left) / 60)
-		var w_seconds = max(0, int(wave_time_left) % 60)
-		time_label.text = "%02d:%02d" % [w_minutes, w_seconds]
+		if current_wave == 6:
+			time_label.text = "KILL THE BOSS"
+		else:
+			var w_minutes = max(0, int(wave_time_left) / 60)
+			var w_seconds = max(0, int(wave_time_left) % 60)
+			time_label.text = "%02d:%02d" % [w_minutes, w_seconds]
 		
-		# WIN CONDITION CHECK:
 		var enemies_alive = get_tree().get_nodes_in_group("enemy").size()
 		var all_spawned = false
 		if enemySpawner:
 			all_spawned = enemySpawner.enemies_spawned >= enemySpawner.enemies_to_spawn
 			
-		if wave_time_left <= 0.0 or (all_spawned and enemies_alive == 0):
-			end_wave()
+		if current_wave == 6:
+			if all_spawned and enemies_alive == 0:
+				trigger_win_screen()
+		else:
+			if wave_time_left <= 0.0 or (all_spawned and enemies_alive == 0):
+				end_wave()
 
 func start_new_wave():
 	wave_time_left = wave_duration
 	is_wave_active = true
 	
-	if wave_label:
-		wave_label.text = "Wave: " + str(current_wave)
+	if current_wave == 6:
+		if wave_label:
+			wave_label.text = "BOSS WAVE"
+		if enemySpawner and enemySpawner.has_method("start_boss_wave"):
+			enemySpawner.start_boss_wave()
+	else:
+		if wave_label:
+			wave_label.text = "Wave: " + str(current_wave)
+			
+		var enemies_this_wave = int(base_enemies_per_wave * pow(enemy_growth_multiplier, current_wave - 1))
 		
-	# Calculate how many enemies are allowed to spawn this wave based on the Inspector variables!
-	var enemies_this_wave = int(base_enemies_per_wave * pow(enemy_growth_multiplier, current_wave - 1))
-	
-	# Pass the command to the spawner!
-	if enemySpawner and enemySpawner.has_method("start_wave"):
-		enemySpawner.start_wave(enemies_this_wave, current_wave)
+		if enemySpawner and enemySpawner.has_method("start_wave"):
+			enemySpawner.start_wave(enemies_this_wave, current_wave)
 
 func end_wave():
 	is_wave_active = false
 	trigger_downgrade_menu()
-# --------------------------------
+
+func trigger_win_screen():
+	is_wave_active = false
+	var win_screen = get_node_or_null("WinScreen")
+	if win_screen:
+		win_screen.trigger_win(time_survived, enemies_killed)
 
 func add_kill():
 	enemies_killed += 1
@@ -120,7 +131,6 @@ func add_kill():
 
 func trigger_downgrade_menu():
 	if available_downgrades.size() < 2:
-		print("YOU SURVIVED EVERYTHING!")
 		current_wave += 1
 		start_new_wave()
 		return
@@ -198,7 +208,6 @@ func resume_game():
 	downgrade_ui.hide()
 	get_tree().paused = false
 	
-	# Increase wave and start again!
 	current_wave += 1
 	start_new_wave()
 
@@ -215,8 +224,6 @@ func apply_downgrade(downgrade: Dictionary):
 			player.wand_has_tracking = false
 		"manual_shoot":
 			player.wand_hold_to_shoot = false
-		"slow_speed":
-			player.speed *= 0.75
 		"elite_enemies":
 			enemySpawner.chance_elite = 0.1
 			enemySpawner.chance_fast = 0.1
@@ -226,3 +233,22 @@ func apply_downgrade(downgrade: Dictionary):
 			enemySpawner.chance_ghost = 0.1
 		"reload":
 			player.reload = true
+
+# ==========================================
+# 🛠️ DEVELOPER CHEAT: SKIP WAVE 🛠️
+# ==========================================
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_N: # Press 'N' to skip wave
+			print("CHEAT: Skipping Wave!")
+			
+			# Instantly delete all enemies on screen to keep things clean
+			var enemies = get_tree().get_nodes_in_group("enemy")
+			for enemy in enemies:
+				enemy.queue_free()
+			
+			# Force the correct ending based on what wave we are on
+			if current_wave == 6:
+				trigger_win_screen()
+			else:
+				end_wave()
