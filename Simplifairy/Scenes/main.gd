@@ -37,7 +37,8 @@ var available_downgrades = [
 	{"id": "lose_aoe", "title": "Dull Wand", "description": "Wand loses Area of Effect","texture": preload('res://Sprites/Icons/smaller_aoe.png')},
 	{"id": "lose_tracking", "title": "Blind Fire", "description": "Bullets no longer home in","texture": preload("res://Sprites/Icons/no_homing.png")},
 	{"id": "manual_shoot", "title": "Jamming", "description": "Disable Auto-Shoot","texture": preload("res://Sprites/Icons/semi_auto.png")},
-	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn","texture": preload('res://Sprites/elite_enemies.png')}
+	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn","texture": preload('res://Sprites/elite_enemies.png')},
+	{"id": "reload", "title": "Reload needed", "description": "Every 5 shots the wand reloads"}
 ]
 
 var current_choice_1: Dictionary
@@ -223,3 +224,5 @@ func apply_downgrade(downgrade: Dictionary):
 			enemySpawner.chance_splitting = 0.1
 			enemySpawner.chance_erratic = 0.1
 			enemySpawner.chance_ghost = 0.1
+		"reload":
+			player.reload = true

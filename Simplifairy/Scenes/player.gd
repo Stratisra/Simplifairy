@@ -36,7 +36,9 @@ extends CharacterBody2D
 @export var auto_shoot: bool = true             # True = Vampire Survivors style (uses Timer node)
 @export var wand_hold_to_shoot: bool = true     # True = Hold button to shoot, False = Click for every shot
 @export var fire_rate: float = 0.25             # Delay between shots when holding the button
+@export var reload: bool = false
 
+var reload_counter: int = 0
 var fire_cooldown: float = 0.0
 var current_health: float = 100.0
 var is_invincible: bool = false
@@ -181,6 +183,12 @@ func start_dash(input_direction: Vector2):
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func shoot():
+	if reload:
+		reload_counter += 1
+		if reload_counter == 6:
+			reload_counter = 0
+			#flip
+			return
 	if projectile_scene and muzzle:
 		var bullet = projectile_scene.instantiate()
 		bullet.global_position = muzzle.global_position
