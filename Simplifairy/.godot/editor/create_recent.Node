@@ -1,13 +1,15 @@
+ProgressBar
+CPUParticles2D
+CollisionShape2D
+StaticBody2D
 Timer
 Sprite2D
-CollisionShape2D
 OpenXRCompositionLayerCylinder
 Area2D
 AnimatedSprite2D
 TileMapLayer
 Camera2D
 Node2D
-CPUParticles2D
 CharacterBody2D
 VisibleOnScreenEnabler2D
 Marker2D

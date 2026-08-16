@@ -15,4 +15,7 @@ speed = 70.0
 shape = SubResource("CircleShape2D_rq33d")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=462728067]
+modulate = Color(1, 0.05882353, 0.08235294, 1)
 texture = ExtResource("2_54jiv")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

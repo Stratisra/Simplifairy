@@ -1,6 +1,7 @@
 extends Area2D
 
-@export var tick_rate: float = 0.5
+@export var damage: float = 5.0      # How much damage it deals per tick
+@export var tick_rate: float = 0.5   # How often it deals damage
 @export var lifetime: float = 4.0
 
 var tick_timer: Timer
@@ -23,5 +24,5 @@ func _on_tick():
 	# get_overlapping_bodies() handles players standing inside the fire perfectly
 	for body in get_overlapping_bodies():
 		if body.is_in_group("player"):
-			# We will hook this up to player health later!
-			print("Player is burning!")
+			if body.has_method("take_damage"):
+				body.take_damage(damage)

@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://3xnkeki0u2jg"]
 
 [ext_resource type="Script" uid="uid://5k7i0pafwd3l" path="res://Scenes/magic_bullet.gd" id="1_aiwfu"]
-[ext_resource type="Texture2D" uid="uid://v4wpfh2u3jre" path="res://Sprites/FairySprite1Alpha.png" id="2_b8trc"]
+[ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="2_b8trc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
+radius = 25.019993
+
+[sub_resource type="Curve" id="Curve_rq33d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="MagicBullet" type="Area2D" unique_id=367243790]
 collision_mask = 3
@@ -13,10 +18,11 @@ damage = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1507681539]
 position = Vector2(2.3841858e-07, -2.0000005)
-scale = Vector2(3.03125, 1.171875)
+scale = Vector2(4, 4)
 texture = ExtResource("2_b8trc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=790664700]
+visible = false
 shape = SubResource("CircleShape2D_rq33d")
 debug_color = Color(0, 0.58431375, 0.69803923, 0.41960785)
 
@@ -25,6 +31,20 @@ debug_color = Color(0, 0.58431375, 0.69803923, 0.41960785)
 [node name="AOEZone" type="Area2D" parent="." unique_id=1813507614]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AOEZone" unique_id=996920297]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=33727599]
+amount = 15
+emission_shape = 1
+emission_sphere_radius = 17.55
+spread = 173.79
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 150.0
+damping_min = 150.0
+damping_max = 150.0
+scale_amount_min = 4.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_rq33d")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

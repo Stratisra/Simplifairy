@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkiwyx0fqp82o" path="res://basic_enemy.gd" id="1_mbxfi"]
 [ext_resource type="Texture2D" uid="uid://b5nubewoq8kyr" path="res://Sprites/MinionsSprite1Alpha-Sheet.png" id="2_fecjr"]
+[ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="3_lal1l"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lal1l"]
 atlas = ExtResource("2_fecjr")
@@ -54,3 +55,5 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision2D" unique_id=2081539820]
 shape = SubResource("CircleShape2D_rq33d")
+
+[node name="DropShadow" parent="." unique_id=2123531142 instance=ExtResource("3_lal1l")]

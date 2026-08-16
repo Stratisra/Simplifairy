@@ -48,13 +48,11 @@ func movement(delta: float):
 	current_direction = global_position.direction_to(player.global_position)
 	
 	# MODIFIER: ERRATIC
-	# Adds a wavy, zig-zag pattern to their approach
 	if is_erratic:
 		erratic_timer += delta * 8.0
 		current_direction = current_direction.rotated(sin(erratic_timer) * 1.2)
 	
 	# MODIFIER: GHOST
-	# Ghosts bypass soft collision entirely, letting them phase through the horde directly at you
 	var separation_vector = Vector2.ZERO
 	if not is_ghost and has_node("SoftCollision"):
 		var soft_collider = $SoftCollision
@@ -75,6 +73,17 @@ func movement(delta: float):
 		knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_decay * delta)
 	
 	move_and_slide()
+	
+	# --- NEW: CONTACT DAMAGE ---
+	# Loop through everything this enemy just physically bumped into
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		# If the thing we touched is the player, hurt them!
+		if collider and collider.is_in_group("player"):
+			if collider.has_method("take_damage"):
+				collider.take_damage(damage)
 
 func animation(delta: float):
 	if sprite:

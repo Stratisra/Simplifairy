@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b5em2akj35r77"]
+
+[ext_resource type="Script" uid="uid://xrkmj42b5v71" path="res://drop_shadow.gd" id="1_my0gx"]
+
+[node name="DropShadow" type="Node2D" unique_id=2123531142]
+script = ExtResource("1_my0gx")
+shadow_width = 20.0
+vertical_offset = 30.0

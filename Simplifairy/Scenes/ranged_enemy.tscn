@@ -2,24 +2,25 @@
 
 [ext_resource type="Script" uid="uid://dl64a33wvvx7b" path="res://Scenes/ranged_enemy.gd" id="1_5x7gc"]
 [ext_resource type="PackedScene" uid="uid://cipu1bb81gj0o" path="res://Scenes/enemy_bullet.tscn" id="2_1qm41"]
-[ext_resource type="Texture2D" uid="uid://b5nubewoq8kyr" path="res://Sprites/MinionsSprite1Alpha-Sheet.png" id="2_nqq2h"]
+[ext_resource type="Texture2D" uid="uid://c2cm2bi6jankh" path="res://Sprites/RangedEnemySpriteSheet.png" id="3_nqq2h"]
+[ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="4_1qm41"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lal1l"]
-atlas = ExtResource("2_nqq2h")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qm41"]
+atlas = ExtResource("3_nqq2h")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_r4aor"]
-atlas = ExtResource("2_nqq2h")
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5pa5"]
+atlas = ExtResource("3_nqq2h")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mbxfi"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lal1l")
+"texture": SubResource("AtlasTexture_1qm41")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_r4aor")
+"texture": SubResource("AtlasTexture_f5pa5")
 }],
 "loop": 1,
 "name": &"default",
@@ -32,8 +33,7 @@ radius = 37.12142
 [sub_resource type="CircleShape2D" id="CircleShape2D_rq33d"]
 radius = 23.021729
 
-[node name="RangedEnemy" type="CharacterBody2D" unique_id=858219944]
-modulate = Color(1, 0.22352941, 1, 1)
+[node name="RangedEnemy" type="CharacterBody2D" unique_id=858219944 node_paths=PackedStringArray("sprite")]
 z_index = 1
 collision_layer = 2
 safe_margin = 14.386
@@ -41,6 +41,7 @@ script = ExtResource("1_5x7gc")
 enemy_projectile = ExtResource("2_1qm41")
 shoot_range = 500.0
 fire_rate = 1.0
+sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=317276068]
 scale = Vector2(4, 4)
@@ -50,11 +51,16 @@ frame_progress = 0.8170145
 speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1930727508]
+visible = false
 shape = SubResource("CircleShape2D_fecjr")
 
 [node name="SoftCollision2D" type="Area2D" parent="." unique_id=312492503]
+visible = false
 collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision2D" unique_id=2081539820]
 shape = SubResource("CircleShape2D_rq33d")
+
+[node name="DropShadow" parent="." unique_id=2123531142 instance=ExtResource("4_1qm41")]
+z_index = 3

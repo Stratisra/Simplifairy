@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://6h4as7ov4tuw" path="res://Scenes/fire_enemy.gd" id="1_xpf0k"]
 [ext_resource type="PackedScene" uid="uid://cne7cd3nkycw0" path="res://Scenes/fire_hazard.tscn" id="2_ft458"]
 [ext_resource type="Texture2D" uid="uid://vy6u7c73hklh" path="res://Sprites/FireEnemySprite1.png" id="2_xpf0k"]
+[ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="4_7bdws"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ft458"]
 atlas = ExtResource("2_xpf0k")
@@ -46,3 +47,6 @@ speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1930727508]
 shape = SubResource("CircleShape2D_fecjr")
+
+[node name="DropShadow" parent="." unique_id=2123531142 instance=ExtResource("4_7bdws")]
+z_index = 3

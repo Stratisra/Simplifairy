@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+@export_group("Player Stats")
+@export var max_health: float = 100.0
+@export var i_frame_duration: float = 0.5 # Half a second of invincibility after being hit
+
 @export_group("AOE & Tracking")
 @export var wand_has_aoe: bool = true
 @export var wand_aoe_radius: float = 60.0
@@ -34,6 +38,11 @@ extends CharacterBody2D
 @export var fire_rate: float = 0.25             # Delay between shots when holding the button
 
 var fire_cooldown: float = 0.0
+var current_health: float = 100.0
+var is_invincible: bool = false
+var player_hit_tween: Tween
+
+@onready var health_bar: ProgressBar = $HealthBar # <--- ADDED THIS
 # --------------------------
 
 var time_moving: float = 0.0
@@ -50,10 +59,17 @@ var dash_cooldown_timer: float = 0.0
 var dash_direction: Vector2 = Vector2.ZERO
 
 func _ready():
+	current_health = max_health
+	
 	if sprite:
 		base_sprite_y = sprite.position.y
 	if wand_sprite:
 		base_wand_pos = wand_sprite.position
+
+	# --- NEW: Set up Health Bar ---
+	if health_bar:
+		health_bar.max_value = max_health
+		health_bar.value = current_health
 
 func get_input():
 	var input = Vector2.ZERO
@@ -177,7 +193,7 @@ func shoot():
 			wand_sprite.modulate = Color(3.0, 3.0, 1.5, 1.0)
 			shoot_tween.tween_property(wand_sprite, "modulate", Color.WHITE, 0.15)
 			
-			wand_sprite.position.x = base_wand_pos.x - 8.0
+			wand_sprite.position.x = base_wand_pos.x - 14.0
 			shoot_tween.tween_property(wand_sprite, "position:x", base_wand_pos.x, 0.15)\
 				.set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
 
@@ -185,3 +201,50 @@ func shoot():
 func _on_shoot_timer_timeout():
 	if auto_shoot:
 		shoot()
+
+# --- HEALTH & DAMAGE LOGIC ---
+
+func take_damage(amount: float):
+	# Ignore damage if we just got hit, or if we are currently dashing!
+	if is_invincible or is_dashing:
+		return
+		
+	current_health -= amount
+	print("Player took damage! Health: ", current_health)
+	
+	# --- NEW: Update the visual bar ---
+	if health_bar:
+		health_bar.value = current_health
+	
+	if current_health <= 0:
+		die()
+	else:
+		# Trigger Invincibility and visual feedback
+		is_invincible = true
+		flash_red()
+		
+		# Create a temporary timer that turns off invincibility after i_frame_duration
+		get_tree().create_timer(i_frame_duration).timeout.connect(func(): is_invincible = false)
+
+func flash_red():
+	if sprite:
+		if player_hit_tween and player_hit_tween.is_valid():
+			player_hit_tween.kill()
+			
+		player_hit_tween = create_tween()
+		
+		# Turn the player bright red and slightly transparent
+		sprite.modulate = Color(1.0, 0.0, 0.0, 0.8)
+		
+		# Fade back to normal white over the duration of the I-frames
+		player_hit_tween.tween_property(sprite, "modulate", Color.WHITE, i_frame_duration)
+
+func die():
+	print("Player Died!")
+	# Stop player from moving or shooting
+	set_physics_process(false)
+	$CollisionShape2D.set_deferred("disabled", true)
+	
+	# For now, just restart the level when the player dies
+	# Later, you can show a Game Over UI screen here instead!
+	get_tree().reload_current_scene()
