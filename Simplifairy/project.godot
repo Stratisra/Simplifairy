@@ -15,6 +15,10 @@ run/main_scene="uid://d1o3e1b0gejnn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+BackroundMusic="*uid://dnlfre3oo17qe"
+
 [display]
 
 window/stretch/mode="canvas_items"
@@ -23,6 +27,10 @@ window/stretch/aspect="expand"
 [global_group]
 
 player="Its the player "
+
+[gui]
+
+theme/custom_font="uid://c0w31jstews76"
 
 [input]
 
@@ -72,3 +80,4 @@ textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.65182173, 0.6589306, 0.97202736, 1)

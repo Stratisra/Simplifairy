@@ -9,9 +9,12 @@
 [ext_resource type="AudioStream" uid="uid://djsngtgxtmgwv" path="res://Music and sound effects/Button1.mp3" id="5_0061g"]
 [ext_resource type="Script" uid="uid://dfo4tb6fch4vc" path="res://Scenes/quit.gd" id="6_8mikk"]
 [ext_resource type="Texture2D" uid="uid://vy6u7c73hklh" path="res://Sprites/FireEnemySprite1.png" id="6_n82rj"]
-[ext_resource type="AudioStream" uid="uid://746cqa6bf6yk" path="res://Music and sound effects/TitleScreen.mp3" id="7_6vd4x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4gxqj"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.14990672, 0.14857262, 0.06950438, 0)
 
 [node name="TitleScreen" type="Control" unique_id=600043915]
 layout_mode = 3
@@ -99,6 +102,7 @@ offset_right = 91.5
 offset_bottom = 50.5
 text = "Start"
 label_settings = SubResource("LabelSettings_4gxqj")
+vertical_alignment = 1
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="VBoxContainer/StartButton" unique_id=1762276875]
 stream = ExtResource("5_0061g")
@@ -117,6 +121,7 @@ offset_right = 91.5
 offset_bottom = 50.5
 text = "Quit"
 label_settings = SubResource("LabelSettings_4gxqj")
+vertical_alignment = 1
 
 [node name="FairySprite1Alpha" type="Sprite2D" parent="VBoxContainer/Quit" unique_id=2052685527]
 z_index = 1
@@ -157,10 +162,6 @@ z_index = -1
 position = Vector2(1.5442619, 1.3147354)
 texture = ExtResource("5_6vd4x")
 hframes = 2
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=61562505]
-stream = ExtResource("7_6vd4x")
-autoplay = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

@@ -74,7 +74,7 @@ func movement(delta: float):
 	
 	move_and_slide()
 	
-	# --- NEW: CONTACT DAMAGE ---
+	# --- CONTACT DAMAGE ---
 	# Loop through everything this enemy just physically bumped into
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
@@ -120,6 +120,11 @@ func flash_white():
 func die(source_position: Vector2 = Vector2.ZERO):
 	set_physics_process(false)
 	$CollisionShape2D.set_deferred("disabled", true)
+	
+	# --- NEW: UPDATE THE KILL SCORE ---
+	if get_tree().current_scene.has_method("add_kill"):
+		get_tree().current_scene.add_kill()
+	# ----------------------------------
 	
 	if sprite:
 		var fling_dir = Vector2.UP

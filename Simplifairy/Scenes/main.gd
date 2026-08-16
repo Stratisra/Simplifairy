@@ -1,6 +1,15 @@
 extends Node2D
 
 @export var player: CharacterBody2D
+@export var enemySpawner: Node2D
+# --- NEW: HUD References ---
+@onready var time_label: Label = $HUD/TimerLabel
+@onready var kill_label: Label = $HUD/KillLabel
+
+var time_survived: float = 0.0
+var enemies_killed: int = 0
+var kill_tween: Tween
+# ---------------------------
 
 @onready var downgrade_ui: CanvasLayer = $DowngradeUI
 @onready var color_rect: ColorRect = $DowngradeUI/ColorRect
@@ -16,7 +25,8 @@ var available_downgrades = [
 	{"id": "lose_aoe", "title": "Dull Wand", "description": "Wand loses Area of Effect","texture": preload('res://Sprites/Icons/smaller_aoe.png')},
 	{"id": "lose_tracking", "title": "Blind Fire", "description": "Bullets no longer home in","texture": preload("res://Sprites/Icons/no_homing.png")},
 	{"id": "manual_shoot", "title": "Jamming", "description": "Disable Auto-Shoot","texture": preload("res://Sprites/Icons/semi_auto.png")},
-	{"id": "slow_speed", "title": "Exhaustion", "description": "Move 25% slower"}
+	{"id": "slow_speed", "title": "Exhaustion", "description": "Move 25% slower"},
+	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn"}
 ]
 
 var current_choice_1: Dictionary
@@ -41,11 +51,40 @@ func _ready():
 	
 	hbox_base_y = hbox.position.y
 	
-	# --- FIX: Set the pivot points to the center of the CARDS (the parent nodes), not the buttons! ---
 	button_1.get_parent().pivot_offset = Vector2(100, 150)
 	button_2.get_parent().pivot_offset = Vector2(100, 150)
 	
+	# Initialize the UI
+	kill_label.text = "Kills: 0"
+	# Set pivot so the bounce animation scales from the center
+	kill_label.pivot_offset = kill_label.size / 2.0 
+	
 	downgrade_ui.hide()
+
+# --- NEW: Timer and Score Logic ---
+func _process(delta: float):
+	# Only tick the clock if the game is NOT paused
+	if not get_tree().paused:
+		time_survived += delta
+		
+		# Format the time into MM:SS
+		var minutes = int(time_survived) / 60
+		var seconds = int(time_survived) % 60
+		time_label.text = "%02d:%02d" % [minutes, seconds]
+
+func add_kill():
+	enemies_killed += 1
+	kill_label.text = "Kills: " + str(enemies_killed)
+	
+	# Make the score text bounce every time you get a kill for that juicy game feel!
+	if kill_tween and kill_tween.is_valid():
+		kill_tween.kill()
+		
+	kill_tween = create_tween()
+	kill_label.scale = Vector2(1.3, 1.3)
+	kill_tween.tween_property(kill_label, "scale", Vector2.ONE, 0.15)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+# ----------------------------------
 
 func _on_timer_timeout():
 	if available_downgrades.size() < 2:
@@ -62,23 +101,19 @@ func _on_timer_timeout():
 	button_1.tooltip_text = current_choice_1.get("title", "") + "\n" + current_choice_1.get("description", "")
 	button_2.tooltip_text = current_choice_2.get("title", "") + "\n" + current_choice_2.get("description", "")
 	
-	# --- 1. SETUP APPEAR ANIMATION ---
-	color_rect.modulate.a = 0.0   # Make background invisible
-	hbox.position.y = -600        # Move cards way above the screen
-	button_1.disabled = false     # Make sure buttons are clickable
+	color_rect.modulate.a = 0.0   
+	hbox.position.y = -600        
+	button_1.disabled = false     
 	button_2.disabled = false
 	
 	get_tree().paused = true
 	downgrade_ui.show()
 	
 	var appear_tween = downgrade_ui.create_tween().set_parallel(true)
-	# Slowly dim the background over 0.5 seconds
 	appear_tween.tween_property(color_rect, "modulate:a", 1.0, 0.5)
-	# Slam the cards down with a bouncy "Back" easing
 	appear_tween.tween_property(hbox, "position:y", hbox_base_y, 0.6)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	
-	# Start the idle float when the slam finishes
 	appear_tween.chain().tween_callback(start_idle_animation)
 
 func start_idle_animation():
@@ -86,7 +121,6 @@ func start_idle_animation():
 		idle_tween.kill()
 		
 	idle_tween = downgrade_ui.create_tween().set_loops()
-	# Float up 15 pixels, then float down 15 pixels infinitely
 	idle_tween.tween_property(hbox, "position:y", hbox_base_y - 15.0, 1.5)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	idle_tween.tween_property(hbox, "position:y", hbox_base_y + 15.0, 1.5)\
@@ -99,11 +133,9 @@ func _on_button_2_pressed():
 	play_select_animation(button_2, button_1, current_choice_2)
 
 func play_select_animation(chosen_btn: TextureButton, other_btn: TextureButton, choice: Dictionary):
-	# Immediately prevent the player from clicking again while it animates
 	chosen_btn.disabled = true
 	other_btn.disabled = true
 	
-	# --- FIX: Grab the actual Card Nodes (parents) so we animate the whole thing ---
 	var chosen_card = chosen_btn.get_parent()
 	var other_card = other_btn.get_parent()
 	
@@ -111,28 +143,19 @@ func play_select_animation(chosen_btn: TextureButton, other_btn: TextureButton, 
 		idle_tween.kill()
 		
 	var select_tween = downgrade_ui.create_tween().set_parallel(true)
-	
-	# 1. Fade the background out
 	select_tween.tween_property(color_rect, "modulate:a", 0.0, 0.4)
-	
-	# 2. The chosen card flashes white, gets slightly bigger, and fades out
 	select_tween.tween_property(chosen_card, "scale", Vector2(1.3, 1.3), 0.3)
 	select_tween.tween_property(chosen_card, "modulate:a", 0.0, 0.3)
-	
-	# 3. The card they DID NOT choose shrinks to nothing
 	select_tween.tween_property(other_card, "scale", Vector2.ZERO, 0.3)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	
-	# WAIT for the animation to completely finish before resuming the game!
 	await select_tween.finished
 	
-	# Reset the cards back to normal so they are ready for the NEXT wave
 	chosen_card.scale = Vector2.ONE
 	other_card.scale = Vector2.ONE
 	chosen_card.modulate.a = 1.0
 	other_card.modulate.a = 1.0
 	
-	# Apply logic and resume
 	apply_downgrade(choice)
 	available_downgrades.erase(choice)
 	resume_game()
@@ -157,3 +180,10 @@ func apply_downgrade(downgrade: Dictionary):
 			player.wand_hold_to_shoot = false
 		"slow_speed":
 			player.speed *= 0.75
+		"elite_enemies":
+			enemySpawner.chance_elite = 0.1
+			enemySpawner.chance_fast = 0.1
+			enemySpawner.chance_shielded = 0.1
+			enemySpawner.chance_splitting = 0.1
+			enemySpawner.chance_erratic = 0.1
+			enemySpawner.chance_ghost = 0.1

@@ -115,9 +115,10 @@ distance = -0.013636359
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_oox86"]
 
-[node name="Main" type="Node2D" unique_id=429833917 node_paths=PackedStringArray("player")]
+[node name="Main" type="Node2D" unique_id=429833917 node_paths=PackedStringArray("player", "enemySpawner")]
 script = ExtResource("1_344ge")
 player = NodePath("Player")
+enemySpawner = NodePath("EnemySpawner")
 
 [node name="Player" parent="." unique_id=889344565 instance=ExtResource("1_jjgbg")]
 position = Vector2(531, 317)
@@ -189,6 +190,23 @@ offset_bottom = 1131.0
 size_flags_horizontal = 4
 color = Color(0, 0, 0, 0.5137255)
 
+[node name="Simplificationtext" type="Label" parent="DowngradeUI/ColorRect" unique_id=1353921408]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -835.0
+offset_top = 94.0
+offset_right = -51.0
+offset_bottom = 161.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9529412, 0.78039217, 0.30980393, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 70
+text = "Pick a Simplification"
+horizontal_alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="DowngradeUI" unique_id=342863113]
 anchors_preset = 8
 anchor_left = 0.5
@@ -196,15 +214,16 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -414.0
-offset_top = -206.0
+offset_top = -142.0
 offset_right = -282.0
-offset_bottom = -142.0
+offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(6, 6)
 size_flags_horizontal = 4
 
 [node name="SimplificationCard" type="TextureRect" parent="DowngradeUI/HBoxContainer" unique_id=513646357]
+z_index = 10
 layout_mode = 2
 texture = ExtResource("9_ynf5e")
 
@@ -224,6 +243,7 @@ grow_vertical = 2
 texture_normal = ExtResource("10_hptm8")
 
 [node name="SimplificationCard2" type="TextureRect" parent="DowngradeUI/HBoxContainer" unique_id=2004460075]
+z_index = 10
 layout_mode = 2
 texture = ExtResource("9_ynf5e")
 
@@ -245,3 +265,29 @@ texture_normal = ExtResource("10_hptm8")
 [node name="DowngradeTimer" type="Timer" parent="." unique_id=998177085]
 wait_time = 10.0
 autostart = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1913342127]
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=702674075]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "00:00:00"
+
+[node name="KillLabel" type="Label" parent="HUD" unique_id=1652971670]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -96.0
+offset_top = 10.0
+offset_right = -15.0
+offset_bottom = 38.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 20
+text = "3132412"
+horizontal_alignment = 2

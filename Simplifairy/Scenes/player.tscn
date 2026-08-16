@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://on30cbf3h35f" path="res://Scenes/pause_menu.tscn" id="6_8erm5"]
 [ext_resource type="PackedScene" uid="uid://b5em2akj35r77" path="res://Scenes/drop_shadow.tscn" id="6_x3wgy"]
 [ext_resource type="Script" uid="uid://dkdsmlo0ahpki" path="res://Scenes/health_bar.gd" id="7_3smsa"]
+[ext_resource type="AudioStream" uid="uid://bofok1fmrnbi0" path="res://Music and sound effects/Wand.mp3" id="9_f1ek2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rq33d"]
 animations = [{
@@ -44,6 +45,7 @@ speed = 300.0
 friction = 1.0
 acceleration = 0.5
 dash_speed = 1500.0
+dash_cooldown = 0.2
 sprite = NodePath("AnimatedSprite2D")
 projectile_scene = ExtResource("2_vgqql")
 wand_pivot = NodePath("WandPivot")
@@ -97,5 +99,10 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_v8jyw")
 value = 30.0
 show_percentage = false
 script = ExtResource("7_3smsa")
+
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=621056873]
+stream = ExtResource("9_f1ek2")
+volume_db = -11.976
+pitch_scale = 1.77
 
 [connection signal="timeout" from="WandPivot/ShootTimer" to="." method="_on_shoot_timer_timeout"]

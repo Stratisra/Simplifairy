@@ -1,14 +1,14 @@
+Label
+AudioStreamPlayer
 AudioStreamPlayer2D
+CanvasLayer
 TextureRect
 ColorRect
-Label
 TextureProgressBar
 TextureButton
 AnimatedSprite2D
 Timer
 Button
 HBoxContainer
-CanvasLayer
 ProgressBar
 CPUParticles2D
-CollisionShape2D

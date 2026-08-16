@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bofok1fmrnbi0"
+path="res://.godot/imported/Wand.mp3-2e090226e457e81a71d9c7fb9978c36f.mp3str"
+
+[deps]
+
+source_file="res://Music and sound effects/Wand.mp3"
+dest_files=["res://.godot/imported/Wand.mp3-2e090226e457e81a71d9c7fb9978c36f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

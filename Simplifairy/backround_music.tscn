@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dnlfre3oo17qe"]
+
+[ext_resource type="AudioStream" uid="uid://746cqa6bf6yk" path="res://Music and sound effects/TitleScreen.mp3" id="1_k3nuf"]
+
+[node name="BackroundMusic" type="AudioStreamPlayer" unique_id=668413123]
+process_mode = 3
+stream = ExtResource("1_k3nuf")
+volume_db = -20.071
+autoplay = true

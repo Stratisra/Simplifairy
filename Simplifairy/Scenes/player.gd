@@ -42,8 +42,11 @@ var current_health: float = 100.0
 var is_invincible: bool = false
 var player_hit_tween: Tween
 
-@onready var health_bar: ProgressBar = $HealthBar # <--- ADDED THIS
-# --------------------------
+@onready var health_bar: ProgressBar = $HealthBar
+
+# --- NEW: Grab the sound node! ---
+@onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
+# ---------------------------------
 
 var time_moving: float = 0.0
 var base_sprite_y: float = 0.0
@@ -66,7 +69,7 @@ func _ready():
 	if wand_sprite:
 		base_wand_pos = wand_sprite.position
 
-	# --- NEW: Set up Health Bar ---
+	# Set up Health Bar
 	if health_bar:
 		health_bar.max_value = max_health
 		health_bar.value = current_health
@@ -97,7 +100,15 @@ func _physics_process(delta):
 	# 2. Physics & Movement
 	if is_dashing:
 		dash_timer -= delta
+		
+		# --- NEW: Steerable Dash! ---
+		# If you are pressing movement keys, it updates the direction mid-dash.
+		# If you let go, you keep sliding in the last direction you pressed!
+		if direction.length() > 0:
+			dash_direction = direction.normalized()
+			
 		velocity = dash_direction * dash_speed
+		# ----------------------------
 		
 		if dash_timer <= 0.0:
 			is_dashing = false
@@ -120,7 +131,7 @@ func _physics_process(delta):
 		
 		if wand_sprite:
 			wand_sprite.flip_v = mouse_pos.x < global_position.x
-			if mouse_pos.y < global_position.y:
+			if mouse_pos.x < global_position.x:
 				wand_pivot.z_index = -1
 			else:
 				wand_pivot.z_index = 1
@@ -182,6 +193,13 @@ func shoot():
 		
 		get_tree().current_scene.add_child(bullet)
 		
+		# --- NEW: Play the sound! ---
+		if shoot_sound:
+			# If the player shoots really fast, this forces the sound to restart 
+			# instantly so it doesn't get cut off or skipped!
+			shoot_sound.play(0.0) 
+		# ----------------------------
+		
 		# Visual Feedback (Recoil & Glow)
 		if wand_sprite:
 			if shoot_tween and shoot_tween.is_valid():
@@ -212,7 +230,7 @@ func take_damage(amount: float):
 	current_health -= amount
 	print("Player took damage! Health: ", current_health)
 	
-	# --- NEW: Update the visual bar ---
+	# Update the visual bar
 	if health_bar:
 		health_bar.value = current_health
 	
@@ -244,7 +262,7 @@ func die():
 	# Stop player from moving or shooting
 	set_physics_process(false)
 	$CollisionShape2D.set_deferred("disabled", true)
-	
+
 	# For now, just restart the level when the player dies
 	# Later, you can show a Game Over UI screen here instead!
 	get_tree().reload_current_scene()

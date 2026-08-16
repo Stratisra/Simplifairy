@@ -1,10 +1,6 @@
 res://Scenes/main.tscn
-res://Scenes/main.gd
+res://Scenes/title_screen.tscn
+res://backround_music.tscn
 res://Scenes/player.gd
 res://Scenes/player.tscn
-res://Scenes/health_bar.gd
-res://Scenes/enemy_spawner.gd
-res://Scenes/title_screen.tscn
-res://Scenes/button.gd
-res://Scenes/quit.gd
-res://Scenes/pause_menu.tscn
+res://Scenes/main.gd
