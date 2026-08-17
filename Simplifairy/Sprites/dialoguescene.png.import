@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvw72cav4iw6v"
-path="res://.godot/imported/elite_enemies.png-d3117710337df4b6f11fbf9055564683.ctex"
+uid="uid://bv6l7f5fi35kx"
+path="res://.godot/imported/dialoguescene.png-23707a7d434a050e6c9fcf18eb326aff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/elite_enemies.png"
-dest_files=["res://.godot/imported/elite_enemies.png-d3117710337df4b6f11fbf9055564683.ctex"]
+source_file="res://Sprites/dialoguescene.png"
+dest_files=["res://.godot/imported/dialoguescene.png-23707a7d434a050e6c9fcf18eb326aff.ctex"]
 
 [params]
 

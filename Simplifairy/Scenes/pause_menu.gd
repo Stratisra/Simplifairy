@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,11 +15,11 @@ func toggle_pause() -> void:
 	visible = is_paused
 	get_tree().paused = is_paused
 
-func _on_resume_pressed() -> void:
+func _on_resume_button_pressed() -> void:
 	get_tree().paused = false
 	hide()
 
-func _on_return_to_title_pressed() -> void:
+func _on_return_to_title_button_pressed() -> void:
 	get_tree().paused = false
-	#hide()
+	hide()
 	get_tree().change_scene_to_file("res://Scenes/title_screen.tscn")

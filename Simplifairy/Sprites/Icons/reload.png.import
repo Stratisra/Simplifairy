@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cofyk8ns0s4ok"
-path="res://.godot/imported/busted_shoes.png-23e110ad8c3f2845ff779fbe1f2a3666.ctex"
+uid="uid://hxgsswwt7tmu"
+path="res://.godot/imported/reload.png-4d46d183fb29e34d186bcfbfda7e5d42.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/busted_shoes.png"
-dest_files=["res://.godot/imported/busted_shoes.png-23e110ad8c3f2845ff779fbe1f2a3666.ctex"]
+source_file="res://Sprites/Icons/reload.png"
+dest_files=["res://.godot/imported/reload.png-4d46d183fb29e34d186bcfbfda7e5d42.ctex"]
 
 [params]
 

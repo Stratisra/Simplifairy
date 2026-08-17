@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bom2usel6j2ik" path="res://Scenes/main.gd" id="1_344ge"]
 [ext_resource type="PackedScene" uid="uid://bof4u2ngcwudx" path="res://Scenes/player.tscn" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://c4viabf30br1q" path="res://Scenes/enemy_spawner.gd" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://dxwwq7yl66h55" path="res://Scenes/intro_story.tscn" id="2_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://ciibr2x570tfe" path="res://Scenes/basic_enemy.tscn" id="3_8gbba"]
 [ext_resource type="Texture2D" uid="uid://cfvr0qu2d3x2f" path="res://Sprites/tilemap.png" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://bd14mrjbwnwsf" path="res://Scenes/ranged_enemy.tscn" id="5_21xkr"]
@@ -122,6 +123,7 @@ distance = -0.013636359
 script = ExtResource("1_344ge")
 player = NodePath("Player")
 enemySpawner = NodePath("EnemySpawner")
+intro_story_scene = ExtResource("2_jkdf5")
 
 [node name="Player" parent="." unique_id=889344565 instance=ExtResource("1_jjgbg")]
 position = Vector2(531, 317)

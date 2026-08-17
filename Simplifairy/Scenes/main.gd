@@ -2,6 +2,8 @@ extends Node2D
 
 @export var player: CharacterBody2D
 @export var enemySpawner: Node2D
+@export var intro_story_scene: PackedScene
+
 var time_survived: float = 0.0
 
 # ==========================================
@@ -33,20 +35,29 @@ var is_wave_active: bool = false
 
 var fallback_texture = preload('res://Sprites/Star.png')
 var available_downgrades = [
-	{"id": "lose_dash", "title": "You don't need shoes", "description": "Increase dash cooldown","texture": preload("res://Sprites/busted_shoes.png")},
+	{"id": "lose_dash", "title": "You don't need shoes", "description": "Increase dash cooldown","texture": preload("res://Sprites/Icons/busted_shoes.png")},
 	{"id": "lose_aoe", "title": "Dull Wand", "description": "Wand loses Area of Effect","texture": preload('res://Sprites/Icons/smaller_aoe.png')},
 	{"id": "lose_tracking", "title": "Blind Fire", "description": "Bullets no longer home in","texture": preload("res://Sprites/Icons/no_homing.png")},
 	{"id": "manual_shoot", "title": "Jamming", "description": "Disable Auto-Shoot","texture": preload("res://Sprites/Icons/semi_auto.png")},
-	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn","texture": preload('res://Sprites/elite_enemies.png')},
-	{"id": "reload", "title": "Reload needed", "description": "Every 5 shots the wand reloads","texture": preload("res://Sprites/reload.png")}
+	{"id": "elite_enemies", "title": "Run out of anti-elite spray", "description": "Elite enemies can now spawn","texture": preload('res://Sprites/Icons/elite_enemies.png')},
+	{"id": "reload", "title": "Reload needed", "description": "Every 5 shots the wand reloads","texture": preload("res://Sprites/Icons/reload.png")}
 ]
 
 var current_choice_1: Dictionary
 var current_choice_2: Dictionary
 var hbox_base_y: float
 var idle_tween: Tween
+var story_instance: CanvasLayer = null
 
-func _ready():
+func _ready() -> void:
+	if intro_story_scene and story_instance == null:
+		story_instance = intro_story_scene.instantiate()
+		add_child(story_instance)
+		get_tree().paused = true
+		story_instance.story_finished.connect(func():
+			get_tree().paused = false
+		)
+		
 	if not player:
 		player = get_tree().get_first_node_in_group("player")
 		

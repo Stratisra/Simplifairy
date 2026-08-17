@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://dxwwq7yl66h55"]
+
+[ext_resource type="Texture2D" uid="uid://v4wpfh2u3jre" path="res://Sprites/FairySprite1Alpha.png" id="1_cpa28"]
+[ext_resource type="Script" uid="uid://b381057ihgyi2" path="res://Scenes/intro_story.gd" id="1_k7ljn"]
+[ext_resource type="Texture2D" uid="uid://dna6jn2y4uooq" path="res://Sprites/fairybeta.png" id="2_qe2hc"]
+[ext_resource type="Texture2D" uid="uid://bv6l7f5fi35kx" path="res://Sprites/dialoguescene.png" id="3_ub641"]
+[ext_resource type="Texture2D" uid="uid://bc2uitdlytsgu" path="res://Sprites/koubi.png" id="4_k7ljn"]
+[ext_resource type="AudioStream" uid="uid://djsngtgxtmgwv" path="res://Music and sound effects/Button1.mp3" id="6_k7ljn"]
+[ext_resource type="Script" uid="uid://edjhgqfk6ep7" path="res://Scenes/texture_button.gd" id="7_ju5wp"]
+[ext_resource type="FontFile" uid="uid://c0w31jstews76" path="res://fonts/Old Fax.ttf" id="7_pw6xs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pw6xs"]
+line_spacing = 25.0
+font = ExtResource("7_pw6xs")
+font_size = 26
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.14990672, 0.14857262, 0.06950438, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q3lu2"]
+font = ExtResource("7_pw6xs")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="IntroStory" type="CanvasLayer" unique_id=173192624]
+process_mode = 2
+process_priority = 1
+script = ExtResource("1_k7ljn")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1838835033]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.627451)
+
+[node name="Scroll" type="TextureRect" parent="Background" unique_id=1543894429]
+z_index = 3
+layout_mode = 0
+offset_left = 52.0
+offset_top = 385.0
+offset_right = 308.0
+offset_bottom = 449.0
+scale = Vector2(4, 4)
+texture = ExtResource("3_ub641")
+stretch_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="Background" unique_id=1776881190]
+z_index = 3
+custom_maximum_size = Vector2(880, 130)
+layout_mode = 0
+offset_left = 132.0
+offset_top = 471.0
+offset_right = 1012.0
+offset_bottom = 546.0
+theme_override_fonts/font = ExtResource("7_pw6xs")
+text = "Hello there! I am your trainer, and with me you will acquire your fairy's diploma!"
+label_settings = SubResource("LabelSettings_pw6xs")
+autowrap_mode = 3
+
+[node name="FairySprite1Alpha" type="Sprite2D" parent="Background" unique_id=2085427532]
+z_index = 1
+position = Vector2(124.99999, 328.99997)
+rotation = 0.22514746
+scale = Vector2(20, 20)
+texture = ExtResource("1_cpa28")
+
+[node name="FairySprite1Alpha2" type="Sprite2D" parent="Background/FairySprite1Alpha" unique_id=226630697]
+modulate = Color(8.826238e-05, 8.826238e-05, 8.826238e-05, 0.5019608)
+z_index = -4
+position = Vector2(2.5127563, 1.7327595)
+texture = ExtResource("1_cpa28")
+
+[node name="Trainer" type="Sprite2D" parent="Background" unique_id=608599612]
+position = Vector2(1046, 363)
+rotation = -0.2617994
+scale = Vector2(20, 20)
+texture = ExtResource("2_qe2hc")
+
+[node name="Trainer2" type="Sprite2D" parent="Background/Trainer" unique_id=684481554]
+modulate = Color(0, 0, 0, 0.5019608)
+z_index = -4
+position = Vector2(2.2, 0.45000002)
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_qe2hc")
+
+[node name="SkipButton" type="TextureButton" parent="Background" unique_id=317971546]
+z_index = 4
+layout_mode = 0
+offset_left = 985.0
+offset_top = 569.0
+offset_right = 1113.0
+offset_bottom = 633.0
+texture_normal = ExtResource("4_k7ljn")
+script = ExtResource("7_ju5wp")
+
+[node name="Skip" type="Label" parent="Background/SkipButton" unique_id=939768704]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 29.0
+offset_right = 92.0
+offset_bottom = 52.0
+text = "Skip"
+label_settings = SubResource("LabelSettings_q3lu2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Background/SkipButton" unique_id=1649879771]
+position = Vector2(966, 558)
+scale = Vector2(1.2, 1.2)
+stream = ExtResource("6_k7ljn")
+
+[connection signal="pressed" from="Background/SkipButton" to="." method="_on_skip_button_pressed"]

@@ -1,37 +1,140 @@
 [gd_scene format=3 uid="uid://on30cbf3h35f"]
 
 [ext_resource type="Script" uid="uid://b5mrqi8qxpxx4" path="res://Scenes/pause_menu.gd" id="1_k0w1u"]
-[ext_resource type="Texture2D" uid="uid://leot8h4kymmc" path="res://Sprites/Star.png" id="2_1och7"]
+[ext_resource type="Texture2D" uid="uid://bc2uitdlytsgu" path="res://Sprites/koubi.png" id="2_k0w1u"]
+[ext_resource type="Texture2D" uid="uid://bv6l7f5fi35kx" path="res://Sprites/dialoguescene.png" id="2_u8tnp"]
+[ext_resource type="Script" uid="uid://xxomusgj8m4o" path="res://Scenes/resume_button.gd" id="4_myy0f"]
+[ext_resource type="Texture2D" uid="uid://dna6jn2y4uooq" path="res://Sprites/fairybeta.png" id="4_stj27"]
+[ext_resource type="FontFile" uid="uid://c0w31jstews76" path="res://fonts/Old Fax.ttf" id="4_u8tnp"]
+[ext_resource type="AudioStream" uid="uid://djsngtgxtmgwv" path="res://Music and sound effects/Button1.mp3" id="5_stj27"]
+[ext_resource type="Script" uid="uid://leyg7np0w315" path="res://Scenes/return_to_title_button.gd" id="6_sjs17"]
 
-[node name="PauseMenu" type="Control" unique_id=25944870]
-process_mode = 3
-layout_mode = 3
-anchor_left = -0.5
-anchor_top = -0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 576.0
-offset_top = 324.0
-offset_right = -576.0
-offset_bottom = -324.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="LabelSettings" id="LabelSettings_sotfv"]
+line_spacing = 20.0
+font = ExtResource("4_u8tnp")
+font_size = 21
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pcd0r"]
+font = ExtResource("4_u8tnp")
+font_size = 80
+outline_size = 18
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0fi7f"]
+font = ExtResource("4_u8tnp")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.14990672, 0.14857262, 0.06950438, 0)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=823375089]
 script = ExtResource("1_k0w1u")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1419311576]
+[node name="Background" type="ColorRect" parent="." unique_id=894313571]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.627451)
+
+[node name="HintScroll" type="TextureRect" parent="Background" unique_id=846060814]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 184.0
+offset_top = 132.0
+offset_right = 440.0
+offset_bottom = 196.0
+scale = Vector2(3, 3)
+texture = ExtResource("2_u8tnp")
 
-[node name="Resume" type="TextureButton" parent="VBoxContainer" unique_id=1290895829]
+[node name="Hint" type="Label" parent="Background" unique_id=1437903070]
+custom_maximum_size = Vector2(600, 150)
+layout_mode = 0
+offset_left = 267.0
+offset_top = 195.0
+offset_right = 867.0
+offset_bottom = 255.0
+text = "Hint: Pausing the game will not make this challenge any easier :)"
+label_settings = SubResource("LabelSettings_sotfv")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Trainer" type="Sprite2D" parent="Background" unique_id=332667992]
+position = Vector2(134, 226)
+scale = Vector2(4, 4)
+texture = ExtResource("4_stj27")
+flip_h = true
+
+[node name="Paused" type="Label" parent="Background" unique_id=1223043545]
+layout_mode = 0
+offset_left = 399.0
+offset_top = 47.0
+offset_right = 704.0
+offset_bottom = 122.0
+text = "Paused"
+label_settings = SubResource("LabelSettings_pcd0r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background" unique_id=2050251302]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -80.0
+offset_right = -40.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+alignment = 1
+
+[node name="ResumeButton" type="TextureButton" parent="Background/VBoxContainer" unique_id=3585312]
 layout_mode = 2
-texture_normal = ExtResource("2_1och7")
-stretch_mode = 0
+texture_normal = ExtResource("2_k0w1u")
+stretch_mode = 4
+script = ExtResource("4_myy0f")
 
-[node name="ReturnToTitle" type="TextureButton" parent="VBoxContainer" unique_id=2112708133]
+[node name="Resume" type="Label" parent="Background/VBoxContainer/ResumeButton" unique_id=660251081]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 26.5
+offset_right = 103.0
+offset_bottom = 49.5
+theme_override_fonts/font = ExtResource("4_u8tnp")
+text = "Resume"
+label_settings = SubResource("LabelSettings_0fi7f")
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Background/VBoxContainer/ResumeButton" unique_id=1659042235]
+position = Vector2(10.5, 1)
+stream = ExtResource("5_stj27")
+
+[node name="ReturnToTitleButton" type="TextureButton" parent="Background/VBoxContainer" unique_id=1279154099]
 layout_mode = 2
-texture_normal = ExtResource("2_1och7")
+texture_normal = ExtResource("2_k0w1u")
 stretch_mode = 0
+script = ExtResource("6_sjs17")
 
-[connection signal="pressed" from="VBoxContainer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="VBoxContainer/ReturnToTitle" to="." method="_on_return_to_title_pressed"]
+[node name="ReturnToTitle" type="Label" parent="Background/VBoxContainer/ReturnToTitleButton" unique_id=406076136]
+layout_mode = 0
+offset_left = 47.5
+offset_top = 28.5
+offset_right = 91.0
+offset_bottom = 51.5
+theme_override_fonts/font = ExtResource("4_u8tnp")
+text = "Title"
+label_settings = SubResource("LabelSettings_0fi7f")
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Background/VBoxContainer/ReturnToTitleButton" unique_id=1820247162]
+position = Vector2(-199.5, -212.5)
+scale = Vector2(0.5, 0.5)
+stream = ExtResource("5_stj27")
+autoplay = true
+
+[connection signal="pressed" from="Background/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="Background/VBoxContainer/ReturnToTitleButton" to="." method="_on_return_to_title_button_pressed"]

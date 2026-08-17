@@ -2,7 +2,6 @@ extends TextureButton # (Change this to 'extends TextureButton' if you are using
 
 @export_file("*.tscn") var next_scene_path: String # This creates a folder icon in the inspector to easily pick your game scene!
 @onready var click_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var music_player: AudioStreamPlayer2D = $"../../AudioStreamPlayer2D"
 
 var base_scale: Vector2
 var anim_tween: Tween

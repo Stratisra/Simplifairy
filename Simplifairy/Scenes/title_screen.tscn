@@ -7,11 +7,13 @@
 [ext_resource type="Script" uid="uid://bhd7kmmh8yceo" path="res://Scenes/button.gd" id="4_n82rj"]
 [ext_resource type="Texture2D" uid="uid://b5nubewoq8kyr" path="res://Sprites/MinionsSprite1Alpha-Sheet.png" id="5_6vd4x"]
 [ext_resource type="AudioStream" uid="uid://djsngtgxtmgwv" path="res://Music and sound effects/Button1.mp3" id="5_0061g"]
+[ext_resource type="FontFile" uid="uid://c0w31jstews76" path="res://fonts/Old Fax.ttf" id="5_sqelc"]
 [ext_resource type="Script" uid="uid://dfo4tb6fch4vc" path="res://Scenes/quit.gd" id="6_8mikk"]
 [ext_resource type="Texture2D" uid="uid://vy6u7c73hklh" path="res://Sprites/FireEnemySprite1.png" id="6_n82rj"]
 [ext_resource type="AudioStream" uid="uid://746cqa6bf6yk" path="res://Music and sound effects/TitleScreen.mp3" id="7_6vd4x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4gxqj"]
+font = ExtResource("5_sqelc")
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 5
@@ -101,6 +103,7 @@ offset_left = 51.5
 offset_top = 27.5
 offset_right = 91.5
 offset_bottom = 50.5
+theme_override_fonts/font = ExtResource("5_sqelc")
 text = "Start"
 label_settings = SubResource("LabelSettings_4gxqj")
 vertical_alignment = 1
@@ -124,7 +127,7 @@ texture = ExtResource("4_12m1t")
 [node name="MinionsSprite1AlphaSheet" type="Sprite2D" parent="VBoxContainer/StartButton" unique_id=1741919576]
 position = Vector2(321.5, 27)
 rotation = 2.8640852
-scale = Vector2(8, -8)
+scale = Vector2(7.9999995, -7.9999995)
 texture = ExtResource("5_6vd4x")
 hframes = 2
 
@@ -137,7 +140,7 @@ hframes = 2
 
 [node name="FireEnemySprite1" type="Sprite2D" parent="VBoxContainer/StartButton" unique_id=1417252320]
 position = Vector2(282, 128.5)
-rotation = 3.1415927
+rotation = -3.1415925
 scale = Vector2(8, -8)
 texture = ExtResource("6_n82rj")
 hframes = 2
@@ -161,6 +164,7 @@ offset_left = 51.5
 offset_top = 27.5
 offset_right = 91.5
 offset_bottom = 50.5
+theme_override_fonts/font = ExtResource("5_sqelc")
 text = "Quit"
 label_settings = SubResource("LabelSettings_4gxqj")
 vertical_alignment = 1

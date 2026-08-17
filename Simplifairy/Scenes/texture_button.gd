@@ -2,7 +2,6 @@ extends TextureButton # (Change this to 'extends TextureButton' if you are using
 
 @export_file("*.tscn") var next_scene_path: String # This creates a folder icon in the inspector to easily pick your game scene!
 @onready var click_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var music_player: AudioStreamPlayer2D = $"../../AudioStreamPlayer2D"
 
 var base_scale: Vector2
 var anim_tween: Tween
@@ -44,9 +43,6 @@ func _on_hover_out() -> void:
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _on_pressed() -> void:
-	# 1. Immediately disable the button so the player can't spam-click it
-	disabled = true
-	
 	# 2. Play the "squish" click animation
 	if anim_tween and anim_tween.is_valid():
 		anim_tween.kill()
@@ -63,9 +59,3 @@ func _on_pressed() -> void:
 	else:
 		# Failsafe: If you forgot to add a sound, just wait 0.2 seconds for the animation to play
 		await get_tree().create_timer(0.2).timeout
-	
-	# 4. Load the actual game!
-	if next_scene_path != "":
-		get_tree().change_scene_to_file(next_scene_path)
-	else:
-		print("ERROR: You forgot to set the Next Scene Path in the Inspector!")
